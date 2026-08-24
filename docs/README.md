@@ -8,10 +8,12 @@ Se você acabou de clonar o repositório, comece por aqui, **nesta ordem**:
 | --- | --- | --- |
 | 1 | [01-o-projeto.md](./01-o-projeto.md) | O que o site faz e o que entra no MVP |
 | 2 | [02-glossario.md](./02-glossario.md) | Palavras técnicas em linguagem simples |
-| 3 | [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md) | **Cada pasta e arquivo e para que serve** |
-| 4 | [04-rotas-e-telas.md](./04-rotas-e-telas.md) | Como as URLs viram páginas no Next.js |
-| 5 | [05-como-contribuir.md](./05-como-contribuir.md) | Como editar o código sem quebrar o trabalho das outras |
-| 6 | [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) | O que **não** fazer neste MVP |
+| 3 | [07-bibliotecas.md](./07-bibliotecas.md) | Todas as bibliotecas e para que serve cada uma |
+| 4 | [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md) | Cada pasta e arquivo e para que serve |
+| 5 | [04-rotas-e-telas.md](./04-rotas-e-telas.md) | Como as URLs viram páginas no Next.js |
+| 6 | [08-identidade-e-menu.md](./08-identidade-e-menu.md) | **Cores, Poppins, ícones Material e o menu lateral** |
+| 7 | [05-como-contribuir.md](./05-como-contribuir.md) | Como editar o código sem quebrar o trabalho das outras |
+| 8 | [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) | O que **não** fazer neste MVP |
 
 ## Textos que já existiam
 
@@ -22,9 +24,10 @@ Se você acabou de clonar o repositório, comece por aqui, **nesta ordem**:
 
 O nome `mpv.md` é um typo antigo de **MVP** (Minimum Viable Product = produto mínimo viável). Não renomeie agora sem avisar o grupo, senão os links quebram.
 
-## Pastas vazias dentro de `docs/`
+## Pastas extras dentro de `docs/`
 
-- `chats/` e `checkouts-ufms/` — pastas reservadas; hoje não têm conteúdo. Podem ser usadas depois para anotações do grupo.
+- `chats/` e `checkouts-ufms/` — pastas reservadas; hoje não têm conteúdo.
+- `ideias_layouts/` — imagens do guia visual (cores, botões). Explicação no código: [08-identidade-e-menu.md](./08-identidade-e-menu.md).
 
 ## Dica
 

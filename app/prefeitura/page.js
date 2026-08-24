@@ -13,6 +13,7 @@ export const metadata = {
 };
 
 export default function PaginaPrefeitura() {
+  // Quem for fazer "resolvido": campo de senha (ADMIN_PASSWORD no .env) aqui.
   return (
     <PlaceholderTela
       titulo="Marcar como resolvido"

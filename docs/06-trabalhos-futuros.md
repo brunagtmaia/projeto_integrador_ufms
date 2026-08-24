@@ -2,6 +2,8 @@
 
 O [mpv.md](./mpv.md) lista o que **não** entra nesta entrega. Este arquivo explica o **porquê**, para ninguém gastar semana em uma tela que o grupo combinou deixar para depois.
 
+Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus as que **ainda faltam no MVP** (Prisma, Leaflet): [07-bibliotecas.md](./07-bibliotecas.md).
+
 ## Não implementar agora
 
 | Ideia | Por que ficou de fora |

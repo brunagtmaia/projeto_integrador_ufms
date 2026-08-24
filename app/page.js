@@ -1,73 +1,94 @@
-// Esta é a HOME do site.
-// No App Router, o arquivo app/page.js corresponde à URL "/".
-// O MVP pede: "Home com os botões" — daqui a pessoa escolhe a tela.
+// =============================================================================
+// HOME — URL: /
+// =============================================================================
+// No App Router, app/page.js é sempre a página inicial.
+// O MVP pede "Home com os botões": daqui a pessoa escolhe a tela.
+//
+// Os mesmos destinos existem no menu lateral (components/MenuLateral.js).
+// Os botões da Home são o atalho visual; o menu é a navegação permanente.
+// =============================================================================
 
 import Link from "next/link";
+import Icone from "../components/Icone";
 
-// Lista das telas do MVP (docs/mpv.md).
-// Cada item tem:
-// - href: caminho da URL (precisa existir um app/<pasta>/page.js)
-// - titulo / descricao: texto do botão
-//
-// Por que um array e não 4 botões copiados?
-// Assim, para incluir outra tela, basta adicionar um objeto aqui.
+// Array das telas. Para incluir outra no futuro:
+// 1) crie app/nova-pasta/page.js
+// 2) acrescente um objeto aqui
+// 3) acrescente o mesmo href em MenuLateral.js
 const telas = [
   {
     href: "/denuncia",
     titulo: "Nova denúncia",
     descricao: "Localização + foto + gerar protocolo (sem login)",
+    icone: "add_a_photo",
+    estilo: "primario",
   },
   {
     href: "/acompanhar",
     titulo: "Acompanhar",
     descricao: "Consulta só pelo número do protocolo",
+    icone: "search",
+    estilo: "secundario",
   },
   {
     href: "/mapa",
     titulo: "Mapa",
     descricao: "Pontos das denúncias (lista + mapa)",
+    icone: "map",
+    estilo: "contorno",
   },
   {
     href: "/prefeitura",
     titulo: "Marcar como resolvido",
     descricao: "Tela da prefeitura (senha no .env)",
+    icone: "task_alt",
+    estilo: "invertido",
   },
 ];
 
-// Componente da Home. "export default" é o que o Next.js desenha nesta rota.
+// Escolhe a classe CSS do botão (definidas em app/globals.css).
+// Assim o JSX da Home não fica cheio de if.
+function classeDoBotao(estilo) {
+  if (estilo === "primario") return "btn-primario";
+  if (estilo === "secundario") return "btn-secundario";
+  if (estilo === "invertido") return "btn-invertido";
+  return "btn-contorno";
+}
+
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-4 py-12 dark:bg-black">
+    <div className="flex flex-1 flex-col items-center px-4 py-10">
       <main className="flex w-full max-w-md flex-col gap-8">
-        <header className="text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
-            Denúncias
-          </h1>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            MVP — escolha uma tela
+        <header className="cartao px-5 py-6">
+          <p className="label-text mb-2 uppercase text-primary">MVP</p>
+          <h1 className="headline">Denúncias</h1>
+          <p className="body-text mt-2">
+            Escolha uma tela. Os botões seguem o guia visual do grupo (Poppins +
+            Material).
           </p>
         </header>
 
-        {/* nav = bloco de navegação. aria-label descreve o menu para acessibilidade. */}
         <nav className="flex flex-col gap-3" aria-label="Telas do MVP">
           {/*
-            .map percorre o array "telas" e cria um Link para cada item.
-            key={tela.href}: o React precisa de um identificador único em listas.
-            Usamos o href porque cada rota é diferente.
+            map = para cada item do array, cria um Link.
+            key = o React exige um id único em listas; usamos a URL.
+            Link (next/link) troca de página SEM recarregar o site inteiro.
+            Não use <a href="/mapa"> para páginas internas.
           */}
           {telas.map((tela) => (
-            // Link do Next.js (não use <a href> para páginas internas).
-            // Ele troca de tela sem recarregar o site inteiro.
             <Link
               key={tela.href}
               href={tela.href}
-              className="rounded-lg border border-zinc-200 bg-white px-4 py-3 text-left transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+              className={`${classeDoBotao(tela.estilo)} w-full !justify-start px-5 py-4`}
             >
-              <span className="block font-medium text-black dark:text-zinc-50">
-                {tela.titulo}
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15">
+                <Icone nome={tela.icone} />
               </span>
-              <span className="mt-1 block text-sm text-zinc-600 dark:text-zinc-400">
-                {tela.descricao}
+              <span className="text-left">
+                <span className="block text-base font-semibold">{tela.titulo}</span>
+                <span className="mt-0.5 block text-sm font-normal opacity-90">
+                  {tela.descricao}
+                </span>
               </span>
             </Link>
           ))}

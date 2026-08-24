@@ -20,7 +20,9 @@ Quando aparecer uma palavra estranha no código ou nas reuniões, volte nesta li
 | **App Router** | Regra: a pasta `app/` define as URLs. `app/mapa/page.js` → `/mapa`. |
 | **Rota** | Caminho na barra de endereço (`/denuncia`, `/mapa`). |
 | **Página (`page.js`)** | Arquivo especial: o Next.js só desenha a rota se existir esse nome. |
-| **Layout (`layout.js`)** | “Moldura” de todas as páginas: fontes, idioma, CSS global. |
+| **Layout (`layout.js`)** | “Moldura” de todas as páginas: fontes, idioma, CSS global e o menu. |
+| **`"use client"`** | Linha no topo de um arquivo quando ele precisa de estado no navegador (ex.: menu aberto/fechado). |
+| **Menu lateral** | Painel à esquerda que **abre e fecha**. Não é barra embaixo. Ver [08-identidade-e-menu.md](./08-identidade-e-menu.md). |
 | **`Link`** | Componente do Next para ir a outra página **sem recarregar** o site inteiro. Não use `<a href="/mapa">` para páginas internas. |
 | **Props** | Dados que um componente recebe. Ex.: `titulo="Mapa"`. |
 | **`export default`** | Diz “esta função é a página / o componente principal deste arquivo”. |
@@ -39,5 +41,7 @@ Quando aparecer uma palavra estranha no código ou nas reuniões, volte nesta li
 | **Leaflet / OSM** | Biblioteca de mapa + mapas gratuitos do OpenStreetMap. Ainda não está instalado. |
 | **Deploy / Vercel** | Colocar o site na internet. Combinamos Vercel no MVP. |
 | **`public/`** | Arquivos que o navegador baixa direto (ícones, fotos em `uploads/`). |
+
+Nomes e funções de **cada biblioteca** (Next, React, Tailwind, Prisma, Leaflet, etc.): [07-bibliotecas.md](./07-bibliotecas.md).
 
 Se faltar uma palavra, acrescentem neste arquivo e avisem o grupo.

@@ -1,41 +1,61 @@
-// Este arquivo envolve TODAS as páginas do site.
-// No Next.js (App Router), o layout.js da pasta app/ é o "esqueleto":
-// o HTML, o idioma, as fontes e o CSS global ficam aqui uma vez só.
-// O conteúdo de cada rota (Home, Denúncia, etc.) entra no lugar de {children}.
+// =============================================================================
+// LAYOUT RAIZ (app/layout.js)
+// =============================================================================
+// Envolve TODAS as páginas. Não tem URL própria.
+//
+// O Next.js (App Router) usa este arquivo como "esqueleto":
+//   - idioma do site (pt-BR)
+//   - fonte Poppins
+//   - CSS global
+//   - menu lateral (uma vez só)
+//
+// {children} = a página da URL de agora.
+// Ex.: se a pessoa está em /mapa, children é o conteúdo de app/mapa/page.js.
+// =============================================================================
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
+import MenuLateral from "../components/MenuLateral";
 import "./globals.css";
 
-// Carrega as fontes do Google. "variable" cria uma CSS variable
-// (ex.: --font-geist-sans) que o Tailwind usa no globals.css.
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// next/font baixa a Poppins do Google e gera a variável CSS --font-poppins.
+// weight: quais "grossuras" vamos usar (400 = normal, 700 = negrito).
+// O guia visual mostrava Inter; o grupo combinou usar Poppins.
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// metadata: título e descrição que aparecem na aba do navegador
-// e em buscadores. Cada página pode sobrescrever só o title.
+// metadata = título da ABA do navegador e texto para buscadores.
+// Cada page.js pode sobrescrever só o "title".
 export const metadata = {
   title: "Denúncias — MVP",
   description:
     "Registrar denúncia sem login, acompanhar por protocolo, ver o mapa e marcar como resolvido.",
 };
 
-// RootLayout é o componente raiz. "children" = a página da URL atual.
 export default function RootLayout({ children }) {
   return (
-    // lang="pt-BR" ajuda leitores de tela e o navegador a tratar o texto em português.
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${poppins.variable} ${poppins.className} h-full antialiased`}
     >
-      {/* min-h-full + flex: a página ocupa a altura da tela e empilha o conteúdo. */}
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        {/*
+          Material Icons Outlined: fonte de ÍCONES (não é npm).
+          A palavra "home" dentro de um span com a classe certa vira o desenho.
+          Ver components/Icone.js.
+        */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-neutral text-foreground">
+        {/* Menu primeiro = a faixa do topo fica ACIMA do conteúdo das páginas. */}
+        <MenuLateral />
+        <div className="flex flex-1 flex-col">{children}</div>
+      </body>
     </html>
   );
 }

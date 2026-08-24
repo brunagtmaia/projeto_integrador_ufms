@@ -13,6 +13,7 @@ export const metadata = {
 };
 
 export default function PaginaDenuncia() {
+  // Quem for fazer o formulário: apague o PlaceholderTela e coloque o JSX aqui.
   return (
     <PlaceholderTela
       titulo="Nova denúncia"

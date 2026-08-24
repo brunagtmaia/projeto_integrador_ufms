@@ -2,6 +2,8 @@
 
 Este texto explica **como o Next.js liga pasta → URL → página**, e o que já está pronto neste repositório.
 
+O que é Next.js (e as outras bibliotecas): [07-bibliotecas.md](./07-bibliotecas.md).
+
 ## A regra (App Router)
 
 1. Tudo que é página fica dentro de `app/`.
@@ -20,9 +22,11 @@ Não existe um arquivo `routes.js` listando URLs. A **árvore de pastas** é a l
 
 ## Layout: o que envolve todas as telas
 
-`app/layout.js` não tem URL própria. Ele desenha o `<html>` e o `<body>` e coloca a página atual em `{children}`.
+`app/layout.js` não tem URL própria. Ele desenha o `<html>` e o `<body>`, coloca o **menu lateral** e a página atual em `{children}`.
 
-Por isso fontes, idioma (`pt-BR`) e CSS global valem para Home, Mapa, etc., sem copiar em cada arquivo.
+Por isso fontes (Poppins), idioma (`pt-BR`), CSS global e o menu valem para Home, Mapa, etc., sem copiar em cada arquivo.
+
+Como o menu abre e fecha: [08-identidade-e-menu.md](./08-identidade-e-menu.md).
 
 Cada `page.js` pode exportar `metadata` só com o **título da aba** (`Nova denúncia`, `Mapa de denúncias`, …).
 
@@ -33,7 +37,7 @@ Cada `page.js` pode exportar `metadata` só com o **título da aba** (`Nova den�
 - `href` — a URL (tem que existir o `page.js` correspondente);
 - `titulo` e `descricao` — texto do botão.
 
-O `.map` percorre o array e cria um `Link` do Next.js para cada tela. **Para adicionar um botão**, acrescente um objeto no array **e** crie a pasta com `page.js`.
+O `.map` percorre o array e cria um `Link` do Next.js para cada tela. **Para adicionar um botão**, acrescente um objeto no array, crie a pasta com `page.js` **e** inclua o mesmo destino em `components/MenuLateral.js`.
 
 ## As outras quatro telas (placeholders)
 
@@ -62,5 +66,6 @@ Isso está em [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) e no [mpv.md]
 
 1. No terminal, na pasta do projeto: `npm run dev`
 2. Abra [http://localhost:3000](http://localhost:3000)
-3. Clique em cada botão. A URL na barra deve mudar (`/denuncia`, `/mapa`, …).
-4. Em cada tela, clique em **Voltar à Home**.
+3. No canto superior esquerdo, clique no ícone de menu (três linhas) para **abrir** o menu lateral. O X, o fundo escuro ou a tecla Esc **fecham**.
+4. Clique em cada item do menu. A URL na barra deve mudar (`/denuncia`, `/mapa`, …).
+5. Em cada tela (exceto a Home), o link **Voltar à Home** também deve funcionar.

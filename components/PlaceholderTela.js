@@ -1,45 +1,49 @@
-// Componente reutilizável: o "miolo" temporário de cada tela.
+// =============================================================================
+// PLACEHOLDER DE TELA
+// =============================================================================
+// "Placeholder" = página temporária. As rotas /denuncia, /acompanhar, /mapa
+// e /prefeitura JÁ FUNCIONAM (dá para abrir a URL), mas o formulário/mapa
+// ainda vai ser feito por outra pessoa.
 //
-// Por que um arquivo em components/ e não copiar o mesmo JSX em 4 páginas?
-// - As 4 rotas (denúncia, acompanhar, mapa, prefeitura) ainda não têm formulário/mapa.
-// - Elas só precisam de título, texto e um jeito de voltar para a Home.
-// - Quando alguém for implementar de verdade, troca o conteúdo de app/<rota>/page.js
-//   e pode até apagar este arquivo se não precisar mais.
+// Por que um componente em vez de copiar o mesmo HTML em 4 arquivos?
+// Se mudarmos o visual do aviso, mudamos SÓ aqui.
 //
-// "props" (titulo, descricao) = dados que a página manda para cá.
-// Ex.: <PlaceholderTela titulo="Mapa" descricao="..." />
+// Como a página usa:
+//   <PlaceholderTela
+//     titulo="Mapa"
+//     descricao="Pontos das denúncias em lista + mapa simples."
+//   />
+//
+// titulo e descricao são PROPS: dados que o pai envia para este componente.
+//
+// Quando forem implementar de verdade: abra app/<rota>/page.js e TROQUE
+// o <PlaceholderTela /> pelo formulário ou pelo mapa. Este arquivo pode
+// continuar existindo enquanto alguma tela ainda estiver incompleta.
+// =============================================================================
 
 import Link from "next/link";
+import Icone from "./Icone";
 
 export default function PlaceholderTela({ titulo, descricao }) {
   return (
-    <div className="flex flex-1 flex-col items-center bg-zinc-50 px-4 py-12 dark:bg-black">
+    <div className="flex flex-1 flex-col items-center px-4 py-10">
       <main className="flex w-full max-w-md flex-col gap-6">
-        <p>
-          {/* href="/" volta para app/page.js (a Home). */}
-          <Link
-            href="/"
-            className="text-sm text-zinc-600 underline underline-offset-2 hover:text-black dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            ← Voltar à Home
-          </Link>
-        </p>
-        <header>
-          <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-50">
-            {titulo}
-          </h1>
+        {/* href="/" volta para app/page.js (a Home). Link do Next = sem recarregar o site. */}
+        <Link href="/" className="btn-contorno w-fit px-4 py-2 text-sm">
+          <Icone nome="arrow_back" className="!text-xl" />
+          Voltar à Home
+        </Link>
+
+        <header className="cartao px-5 py-6">
+          <h1 className="headline">{titulo}</h1>
           {/*
-            Só mostra a descrição se ela existir.
-            descricao ? (...) : null  = "se tiver texto, desenha o <p>; senão, nada".
+            descricao ? (...) : null
+            = "se veio texto de descrição, mostra o parágrafo; senão, não desenha nada".
           */}
-          {descricao ? (
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {descricao}
-            </p>
-          ) : null}
+          {descricao ? <p className="body-text mt-2">{descricao}</p> : null}
         </header>
-        {/* Aviso para o grupo: a URL já funciona; a tela em si ainda vai ser feita. */}
-        <p className="rounded-lg border border-dashed border-zinc-300 px-4 py-8 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
+
+        <p className="cartao border-dashed px-4 py-8 text-center body-text">
           Tela ainda não implementada. A rota já está configurada.
         </p>
       </main>

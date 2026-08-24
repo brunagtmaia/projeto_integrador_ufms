@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+/*
+  =============================================================================
+  CSS GLOBAL (vale para o site inteiro)
+  =============================================================================
+  Este arquivo é importado em app/layout.js. Por isso as cores e os botões
+  funcionam em todas as páginas, sem copiar CSS em cada uma.
+
+  Duas formas de estilo neste projeto:
+  1) Classes do Tailwind no JSX: className="flex px-4" (espaço, alinhamento)
+  2) Classes NOSSAS aqui: .btn-primario, .cartao, .headline
+     (cores do guia visual em docs/ideias_layouts/)
+
+  :root { --primary: ... } cria VARIÁVEIS CSS. Trocar o verde do app =
+  mudar --primary neste arquivo, em um lugar só.
+
+  @theme inline liga essas cores ao Tailwind (ex.: className="bg-primary"
+  usa o mesmo verde).
+
+  Fonte do texto: Poppins (carregada em layout.js).
+  Fonte dos ícones: Material Icons Outlined (também no layout.js).
+  =============================================================================
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paleta do guia: verde, navy, mint, fundo claro */
+  --primary: #2d6a4f;
+  --primary-escuro: #1b4332;
+  --secondary: #1b263b;
+  --tertiary: #d8f3dc;
+  --neutral: #f8f9fa;
+  --neutral-borda: #e9ecef;
+  --texto: #1b263b;
+  --texto-suave: #5c6770;
+  --perigo: #c0392b;
+  --branco: #ffffff;
+  --raio: 14px;
+  --raio-pill: 999px; /* 999px = pílula (bem arredondado) */
+  --sombra: 0 8px 24px rgb(27 38 59 / 8%);
+
+  --background: var(--neutral);
+  --foreground: var(--texto);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-neutral: var(--neutral);
+  --font-sans: var(--font-poppins);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+}
+
+/*
+  A fonte Material transforma o TEXTO (ex.: "home") no desenho do ícone.
+  Sem font-family certa, a pessoa veria a palavra "home" em vez da casinha.
+*/
+.material-icons-outlined {
+  font-family: "Material Icons Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: normal;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hierarquia de texto do guia: título grande, corpo, rótulo pequeno */
+.headline {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--secondary);
+}
+
+.body-text {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--texto-suave);
+}
+
+.label-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Quatro tipos de botão do guia visual */
+.btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--raio-pill);
+  background: var(--primary);
+  color: var(--branco);
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  box-shadow: var(--sombra);
+  transition: background 0.15s ease;
+}
+
+.btn-primario:hover {
+  background: var(--primary-escuro);
+}
+
+.btn-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--raio-pill);
+  background: var(--neutral-borda);
+  color: var(--secondary);
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+}
+
+.btn-invertido {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--raio-pill);
+  background: var(--secondary);
+  color: var(--branco);
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+}
+
+.btn-contorno {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--raio-pill);
+  background: var(--branco);
+  color: var(--secondary);
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--secondary);
+}
+
+.cartao {
+  background: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  border: 1px solid var(--neutral-borda);
 }

@@ -12,6 +12,7 @@ export const metadata = {
 };
 
 export default function PaginaAcompanhar() {
+  // Quem for fazer a consulta: campo de protocolo + resultado no lugar do placeholder.
   return (
     <PlaceholderTela
       titulo="Acompanhar"

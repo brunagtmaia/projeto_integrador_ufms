@@ -19,7 +19,9 @@ projeto_integrador_ufms/
 │   ├── prefeitura/page.js    ← tela /prefeitura
 │   └── api/                  ← futuro: rotas de dados (pastas ainda vazias)
 ├── components/               ← pedaços de tela reutilizáveis
-│   └── PlaceholderTela.js
+│   ├── PlaceholderTela.js
+│   ├── Icone.js
+│   └── MenuLateral.js
 ├── docs/                     ← esta documentação
 ├── public/                   ← arquivos estáticos (imagens, uploads)
 ├── lib/                      ← futuro: funções auxiliares (ex.: gerar protocolo)
@@ -49,7 +51,9 @@ Lista:
 - os **comandos** (`npm run dev`, `npm run build`, `npm run lint`);
 - as **dependências** (Next.js, React, Tailwind).
 
-Se alguém adicionar uma biblioteca, este arquivo muda e **todo mundo** precisa rodar `npm install` de novo.
+O que cada biblioteca faz (Next, React, Tailwind, ESLint, o que ainda falta no MVP): [07-bibliotecas.md](./07-bibliotecas.md).
+
+Se alguém adicionar uma biblioteca, este arquivo muda e **todo mundo** precisa rodar `npm install` de novo. Atualizem também o [07-bibliotecas.md](./07-bibliotecas.md).
 
 ### `package-lock.json`
 
@@ -107,15 +111,15 @@ No **App Router**, o nome da **pasta** vira o caminho da URL, **desde que** exis
 | Caminho no disco | URL no navegador | Função hoje |
 | --- | --- | --- |
 | `app/page.js` | `/` | Home com os botões para as outras telas |
-| `app/layout.js` | (todas) | HTML, idioma `pt-BR`, fontes, `{children}` |
-| `app/globals.css` | (todas) | Importa o Tailwind e cores de fundo/texto |
+| `app/layout.js` | (todas) | HTML, idioma `pt-BR`, Poppins, ícones Material, `{children}` e o **menu lateral** |
+| `app/globals.css` | (todas) | Tailwind + paleta (verde/navy) + classes `btn-primario`, `cartao` |
 | `app/favicon.ico` | — | Ícone da aba |
 | `app/denuncia/page.js` | `/denuncia` | Placeholder da denúncia sem login |
 | `app/acompanhar/page.js` | `/acompanhar` | Placeholder da consulta por protocolo |
 | `app/mapa/page.js` | `/mapa` | Placeholder do mapa |
 | `app/prefeitura/page.js` | `/prefeitura` | Placeholder de marcar como resolvido |
 
-**Como criar uma tela nova:** crie `app/nome-da-tela/page.js` e acrescente um item no array `telas` em `app/page.js`.
+**Como criar uma tela nova:** crie `app/nome-da-tela/page.js`, acrescente um item no array `telas` em `app/page.js` **e** um item no array `itens` em `components/MenuLateral.js`.
 
 ### `app/api/`
 
@@ -127,11 +131,13 @@ Não coloque tela de usuário aqui: API não é página com botão.
 
 ## Pasta `components/`
 
-Pedaços de interface **reutilizáveis**. Não viram URL sozinhos: alguma `page.js` precisa importá-los.
+Pedaços de interface **reutilizáveis**. A maioria é importada por um `page.js`. O `MenuLateral.js` é importado pelo `app/layout.js`, por isso aparece em **todas** as telas.
 
 | Arquivo | Para quê |
 | --- | --- |
 | `PlaceholderTela.js` | Título, descrição, link “Voltar à Home” e o aviso de “tela ainda não implementada”. Usado pelas quatro rotas do MVP. |
+| `Icone.js` | Desenha um ícone **Material Icons Outlined** (ex.: `<Icone nome="home" />`). Nomes em inglês: [fonts.google.com/icons](https://fonts.google.com/icons) (estilo Outlined). |
+| `MenuLateral.js` | Menu **lateral** (abre/fecha). O botão com o ícone `menu` no topo abre; o X, o fundo escuro ou a tecla Esc fecham. Ao clicar numa tela, o menu fecha sozinho. |
 
 Quando o formulário de denúncia estiver pronto, essa página **para de usar** o placeholder. O arquivo pode ficar para outras telas incompletas ou ser apagado se ninguém mais precisar.
 
@@ -144,9 +150,10 @@ Documentação do trabalho (este guia). Veja o índice em [README.md](./README.m
 | Item | Para quê |
 | --- | --- |
 | `README.md` | Índice da documentação |
-| `01-o-projeto.md` … `06-trabalhos-futuros.md` | Guias para iniciantes |
+| `01-o-projeto.md` … `08-identidade-e-menu.md` | Guias para iniciantes (o `07` é bibliotecas; o `08` é visual e menu) |
 | `mpv.md` | Escopo do MVP |
 | `arquitetura_e_tecnologias.md` | Instalar e rodar na máquina |
+| `ideias_layouts/` | Imagens do guia de cores/botões |
 | `chats/` | Pasta vazia (anotações futuras) |
 | `checkouts-ufms/` | Pasta vazia (anotações futuras) |
 

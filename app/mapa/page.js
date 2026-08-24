@@ -11,6 +11,7 @@ export const metadata = {
 };
 
 export default function PaginaMapa() {
+  // Quem for fazer o mapa: Leaflet entra neste arquivo (depois de instalar a lib).
   return (
     <PlaceholderTela
       titulo="Mapa"

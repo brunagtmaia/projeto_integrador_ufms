@@ -2,7 +2,9 @@
 
 ## Arquitetura, tecnologias e como configurar o projeto na sua máquina
 
-Hoje o repositório já tem o **Next.js** (JavaScript + App Router + Tailwind). Banco (Prisma + SQLite), mapa (Leaflet) e as telas de denúncia ainda entram nos próximos passos do MVP.
+Hoje o repositório já tem o **Next.js** (JavaScript + App Router + Tailwind), **Poppins**, ícones **Material** e um **menu lateral** que abre e fecha. Banco (Prisma + SQLite), mapa (Leaflet) e as telas de denúncia ainda entram nos próximos passos do MVP.
+
+**O que cada biblioteca faz:** [07-bibliotecas.md](./07-bibliotecas.md) (instaladas no `package.json`, fontes/ícones e o que ainda falta).
 
 ## O que é este projeto?
 

@@ -30,6 +30,8 @@
 | Foto | salvar em `public/uploads` |  
 | Deploy | **Vercel** | 
 
+O que cada item da stack **é** (e o que já está instalado hoje): [07-bibliotecas.md](./07-bibliotecas.md). 
+
 ## Ordem de implementação
 
 1.  Home + navegação

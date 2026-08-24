@@ -5,14 +5,17 @@ Este guia é o “modo de usar” o repositório no dia a dia.
 ## Antes de escrever código
 
 1. Leia [01-o-projeto.md](./01-o-projeto.md) e o [mpv.md](./mpv.md) — para não implementar login sem o grupo ter pedido.
-2. Rode o site na sua máquina ([arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md)).
-3. Avise no grupo **qual tela** você vai fazer (`/denuncia`, `/mapa`, …) para duas pessoas não editarem o mesmo arquivo ao mesmo tempo.
+2. Se não souber o que é Next, React ou Tailwind: [07-bibliotecas.md](./07-bibliotecas.md).
+3. Rode o site na sua máquina ([arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md)).
+4. Avise no grupo **qual tela** você vai fazer (`/denuncia`, `/mapa`, …) para duas pessoas não editarem o mesmo arquivo ao mesmo tempo.
 
 ## Onde mexer em cada tarefa
 
 | Tarefa | Arquivos típicos |
 | --- | --- |
 | Mudar texto/botões da Home | `app/page.js` |
+| Incluir a mesma tela no menu | `components/MenuLateral.js` (array `itens`) |
+| Cores / estilo dos botões | `app/globals.css` (ver [08-identidade-e-menu.md](./08-identidade-e-menu.md)) |
 | Implementar o formulário de denúncia | `app/denuncia/page.js` (e depois API + Prisma) |
 | Consulta por protocolo | `app/acompanhar/page.js` |
 | Mapa | `app/mapa/page.js` (e instalar Leaflet no passo certo) |
@@ -58,6 +61,7 @@ Isso se chama **conflito**. O Git marca os dois trechos no arquivo. Não chute: 
 
 - [ ] `npm run dev` abre sem erro vermelho no terminal
 - [ ] A Home ainda leva a todas as telas
+- [ ] O menu lateral abre, fecha (X / fundo / Esc) e marca a tela atual
 - [ ] A tela que você fez funciona no caminho combinado (`/denuncia`, etc.)
 - [ ] Comentários em português nos trechos novos
 - [ ] `git status` **não** mostra `.env` nem `node_modules`
