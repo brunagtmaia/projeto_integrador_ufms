@@ -159,3 +159,44 @@ body {
   box-shadow: var(--sombra);
   border: 1px solid var(--neutral-borda);
 }
+
+/*
+  --- Mapa (Leaflet) ---
+  O Leaflet coloca controles com z-index alto. Baixamos para 0/1 para o
+  menu lateral (z-40) continuar clicável por cima.
+
+  .mapa-area = caixinha do mapa na TelaMapa.
+  min-height 260px: alguns navegadores (e o preview) devolvem vh = 0;
+  sem mínimo o mapa some. No desktop (>= 1024px) o mapa enche a coluna.
+*/
+.mapa-leaflet {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  z-index: 0;
+}
+
+.mapa-area {
+  height: 42vh;
+  min-height: 260px;
+}
+
+@media (min-width: 1024px) {
+  .mapa-area {
+    height: 100%;
+    min-height: 28rem;
+  }
+}
+
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control {
+  z-index: 1;
+}
+
+/* Tira o quadrado branco padrão do ícone do Leaflet; usamos bolinha nossa. */
+.marcador-denuncia {
+  background: none;
+  border: none;
+}

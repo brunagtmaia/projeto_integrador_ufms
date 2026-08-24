@@ -18,7 +18,7 @@ Este guia é o “modo de usar” o repositório no dia a dia.
 | Cores / estilo dos botões | `app/globals.css` (ver [08-identidade-e-menu.md](./08-identidade-e-menu.md)) |
 | Implementar o formulário de denúncia | `app/denuncia/page.js` (e depois API + Prisma) |
 | Consulta por protocolo | `app/acompanhar/page.js` |
-| Mapa | `app/mapa/page.js` (e instalar Leaflet no passo certo) |
+| Mapa | `app/mapa/page.js` e `components/mapa/` (já tem Leaflet; o banco entra depois) |
 | Marcar resolvido | `app/prefeitura/page.js` + senha no `.env` |
 | Componente usado em várias telas | pasta `components/` |
 | Função auxiliar (gerar protocolo) | pasta `lib/` (criar o arquivo quando precisar) |

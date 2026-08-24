@@ -21,10 +21,12 @@ projeto_integrador_ufms/
 ├── components/               ← pedaços de tela reutilizáveis
 │   ├── PlaceholderTela.js
 │   ├── Icone.js
-│   └── MenuLateral.js
+│   ├── MenuLateral.js
+│   └── mapa/                 ← tela /mapa (Leaflet)
 ├── docs/                     ← esta documentação
 ├── public/                   ← arquivos estáticos (imagens, uploads)
-├── lib/                      ← futuro: funções auxiliares (ex.: gerar protocolo)
+├── lib/                      ← funções e dados auxiliares
+│   └── denuncias-exemplo.js  ← lista falsa para o mapa (sem banco)
 ├── prisma/                   ← futuro: banco SQLite (hoje incompleto)
 ├── package.json              ← nome do projeto, scripts, bibliotecas
 ├── README.md                 ← resumo rápido na raiz do GitHub
@@ -116,7 +118,7 @@ No **App Router**, o nome da **pasta** vira o caminho da URL, **desde que** exis
 | `app/favicon.ico` | — | Ícone da aba |
 | `app/denuncia/page.js` | `/denuncia` | Placeholder da denúncia sem login |
 | `app/acompanhar/page.js` | `/acompanhar` | Placeholder da consulta por protocolo |
-| `app/mapa/page.js` | `/mapa` | Placeholder do mapa |
+| `app/mapa/page.js` | `/mapa` | Mapa OpenStreetMap + lista de casos (dados de exemplo) |
 | `app/prefeitura/page.js` | `/prefeitura` | Placeholder de marcar como resolvido |
 
 **Como criar uma tela nova:** crie `app/nome-da-tela/page.js`, acrescente um item no array `telas` em `app/page.js` **e** um item no array `itens` em `components/MenuLateral.js`.
@@ -135,9 +137,11 @@ Pedaços de interface **reutilizáveis**. A maioria é importada por um `page.js
 
 | Arquivo | Para quê |
 | --- | --- |
-| `PlaceholderTela.js` | Título, descrição, link “Voltar à Home” e o aviso de “tela ainda não implementada”. Usado pelas quatro rotas do MVP. |
+| `PlaceholderTela.js` | Título, descrição, “Voltar à Home” e aviso de tela incompleta. Usado em `/denuncia`, `/acompanhar` e `/prefeitura` (não mais em `/mapa`). |
 | `Icone.js` | Desenha um ícone **Material Icons Outlined** (ex.: `<Icone nome="home" />`). Nomes em inglês: [fonts.google.com/icons](https://fonts.google.com/icons) (estilo Outlined). |
-| `MenuLateral.js` | Menu **lateral** (abre/fecha). O botão com o ícone `menu` no topo abre; o X, o fundo escuro ou a tecla Esc fecham. Ao clicar numa tela, o menu fecha sozinho. |
+| `MenuLateral.js` | Menu **lateral** (abre/fecha). |
+| `mapa/TelaMapa.js` | Lista, filtro, botão Centralizar e carrega o mapa (só no navegador). |
+| `mapa/MapaLeaflet.js` | Leaflet + OpenStreetMap + marcadores + enquadrar pontos. |
 
 Quando o formulário de denúncia estiver pronto, essa página **para de usar** o placeholder. O arquivo pode ficar para outras telas incompletas ou ser apagado se ninguém mais precisar.
 
@@ -175,7 +179,11 @@ Tudo aqui é servido **como arquivo estático**. Exemplo: `public/next.svg` apar
 
 ## Pasta `lib/`
 
-Hoje está **vazia**. Combinamos usar para funções que não são tela, por exemplo: gerar número de protocolo, falar com o Prisma. Colocar isso em `lib/` evita copiar a mesma lógica em várias páginas.
+Funções e dados que **não são tela**.
+
+| Arquivo | Para quê |
+| --- | --- |
+| `denuncias-exemplo.js` | Lista falsa de denúncias (endereço, status, lat/lng) para a tela `/mapa` até existir o Prisma. |
 
 ---
 

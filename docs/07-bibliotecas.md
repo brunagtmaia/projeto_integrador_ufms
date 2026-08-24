@@ -8,9 +8,9 @@ A lista oficial de nomes e versões fica no arquivo `package.json` na raiz. O co
 
 Há três grupos:
 
-1. **Já instaladas** — estão no `package.json` hoje.
-2. **Não são npm, mas o site usa** — fonte e ícones (Google Fonts).
-3. **Combinadas no MVP, ainda não instaladas** — banco e mapa.
+1. **Já instaladas** — estão no `package.json` hoje (incluindo Leaflet para o mapa).
+2. **Não são npm, mas o site usa** — fonte, ícones e os tiles do OpenStreetMap.
+3. **Combinadas no MVP, ainda não instaladas** — banco (Prisma + SQLite).
 
 ---
 
@@ -25,6 +25,8 @@ São as bibliotecas que o site **precisa para funcionar** (na sua máquina e, de
 | **next** | 16.3.1 | **Next.js.** Monta o site: páginas na pasta `app/`, endereços (`/mapa`), e depois as APIs (`/api/...`). O comando `npm run dev` é o Next.js. Sem ele não existe o projeto como está. |
 | **react** | 19.2.8 | **React.** Permite escrever a tela em **componentes** (funções que devolvem JSX, tipo `Home` ou `Icone`). O Next.js **usa** o React por baixo. |
 | **react-dom** | 19.2.8 | Liga o React ao **navegador** (coloca o HTML na página). Quase sempre vem junto com o React; não mexemos nela no dia a dia. |
+| **leaflet** | 1.9.x | Desenha o **mapa** e os marcadores na tela `/mapa`. |
+| **react-leaflet** | 5.x | Deixa usar o Leaflet com componentes React (`MapContainer`, `Marker`). |
 
 Por que Next **e** React? O React desenha os pedaços da tela. O Next.js organiza pastas, rotas, servidor e o comando de desenvolvimento.
 
@@ -50,7 +52,8 @@ Essas coisas vêm da **internet** quando a página abre (ou o Next baixa a fonte
 | O quê | Onde está no código | Para que serve |
 | --- | --- | --- |
 | **Poppins** | `next/font/google` em `app/layout.js` | Fonte do app (o guia visual mostrava Inter; o grupo pediu **Poppins**). |
-| **Material Icons Outlined** | `<link>` no `app/layout.js` + componente `components/Icone.js` | Ícones do **Material Design** (casinha, lupa, mapa…). O nome em inglês vira o desenho (`home`, `search`, `map`). Catálogo: [fonts.google.com/icons](https://fonts.google.com/icons). |
+| **Material Icons Outlined** | `<link>` no `app/layout.js` + componente `components/Icone.js` | Ícones do **Material Design**. Catálogo: [fonts.google.com/icons](https://fonts.google.com/icons). |
+| **OpenStreetMap (tiles)** | URL no `MapaLeaflet.js` | Imagens das ruas, **gratuitas**, sem chave. O Leaflet só “cola” esses quadradinhos. |
 
 ---
 
@@ -75,9 +78,8 @@ O [mpv.md](./mpv.md) pediu estas camadas. Elas **entram nos próximos passos**. 
 | --- | --- | --- |
 | **Prisma** (`prisma` + em geral `@prisma/client`) | Desenha as tabelas (`schema.prisma`) e conversa com o banco sem escrever SQL na mão. | Passo de **gravar denúncia** e consultar protocolo. |
 | **SQLite** | Banco em **um arquivo** (`prisma/dev.db`). Não instala MySQL. | Junto com o Prisma. |
-| **Leaflet** | Biblioteca de **mapa** no navegador. | Tela `/mapa`. |
-| **OpenStreetMap** | Mapas de fundo **gratuitos** (ruas, bairros). O Leaflet desenha; o OSM é o “papel de parede” do mapa. Não é um pacote npm obrigatório: o Leaflet aponta para os tiles do OSM. |
-| **react-leaflet** (comum, ainda não definido pelo grupo) | Facilita usar Leaflet **dentro de componentes React**. Se o grupo só usar Leaflet “puro”, pode não entrar. |
+
+O **mapa** (Leaflet + OpenStreetMap) já está na tela `/mapa`, ainda com dados de exemplo em `lib/denuncias-exemplo.js`.
 
 **Não instalar agora** (trabalhos futuros): PostGIS, bibliotecas de login/e-mail, PWA.
 
@@ -106,7 +108,7 @@ Você escreve JSX  →  React desenha os componentes
                      Poppins + Material Icons = identidade visual
                      Menu lateral (abre/fecha) em todas as páginas
 Próximos passos   →  Prisma + SQLite gravam denúncia
-                     Leaflet + OpenStreetMap mostram o mapa
+                     (o mapa já usa Leaflet + OpenStreetMap com dados de exemplo)
 ```
 
 Mais detalhes de pastas: [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md).  

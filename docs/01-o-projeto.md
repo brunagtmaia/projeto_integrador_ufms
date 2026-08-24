@@ -11,16 +11,16 @@ MVP = a versão **mais simples** que ainda é útil. Combinamos o seguinte:
 1. **Home** — tela inicial com botões para as outras telas.
 2. **Nova denúncia** — **sem criar conta**. A pessoa informa localização, envia **foto** e recebe um **número de protocolo**.
 3. **Acompanhar** — consulta o status **só com o protocolo** (não tem “minhas denúncias” nem login).
-4. **Mapa** — vê os pontos das denúncias (mapa simples + lista).
+4. **Mapa** — vê os pontos das denúncias (mapa OpenStreetMap + lista). A tela já existe no front, com dados de exemplo.
 5. **Prefeitura** — alguém da prefeitura marca como **resolvido** usando uma **senha** guardada no arquivo `.env`. Não existe cadastro de usuários.
 
 ## O que ainda não está pronto
 
-Hoje as **rotas** (endereços das telas) já existem. Há um **menu lateral** (abre/fecha) em todas as páginas. As telas de denúncia, acompanhar, mapa e prefeitura ainda são **placeholders** (página temporária). Quem for implementar o formulário, o mapa e a senha edita o `page.js` de cada pasta.
+Hoje as **rotas** já existem e o **menu lateral** (abre/fecha) aparece em todas as páginas. A tela **`/mapa` já está feita no front** (OpenStreetMap + lista de exemplo). Denúncia, acompanhar e prefeitura ainda são **placeholders**. Quem for implementar o formulário e a senha edita o `page.js` de cada pasta.
 
-Visual (cores, fonte, ícones): [08-identidade-e-menu.md](./08-identidade-e-menu.md).
+Visual (cores, fonte, ícones e mapa): [08-identidade-e-menu.md](./08-identidade-e-menu.md).
 
-Banco de dados (Prisma + SQLite), salvar foto e Leaflet entram nos próximos passos. Veja a ordem em [mpv.md](./mpv.md).
+Banco de dados (Prisma + SQLite) e salvar foto entram nos próximos passos. Veja a ordem em [mpv.md](./mpv.md).
 
 ## Por que JavaScript e Next.js?
 

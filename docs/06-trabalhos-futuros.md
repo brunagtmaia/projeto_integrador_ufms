@@ -2,7 +2,7 @@
 
 O [mpv.md](./mpv.md) lista o que **não** entra nesta entrega. Este arquivo explica o **porquê**, para ninguém gastar semana em uma tela que o grupo combinou deixar para depois.
 
-Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus as que **ainda faltam no MVP** (Prisma, Leaflet): [07-bibliotecas.md](./07-bibliotecas.md).
+Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus o que **ainda falta no MVP** (Prisma + SQLite para gravar denúncia). O Leaflet do mapa **já está** no projeto: [07-bibliotecas.md](./07-bibliotecas.md).
 
 ## Não implementar agora
 
@@ -22,14 +22,14 @@ Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus as q
 
 Isso **entra**, só não está todo pronto no código hoje:
 
-1. Home + navegação ← **feito** (rotas + botões)
+1. Home + navegação ← **feito**
 2. Formulário de denúncia → gravar no SQLite → mostrar protocolo
 3. Consulta por protocolo
-4. Mapa com os registros
+4. Mapa com os registros ← **feito no front** (dados de exemplo; banco depois)
 5. Marcar como resolvido (senha `.env`)
-6. Ajustar CSS no celular
+6. Ajustar CSS no celular (a `/mapa` já é responsiva)
 
-Se você for implementar o item 2–6, está no escopo. Se for criar `/login`, pare e releia o MVP.
+Se você for implementar o item 2, 3, 5 ou o banco da lista do mapa, está no escopo. Se for criar `/login`, pare e releia o MVP.
 
 ## Quando o trabalho da disciplina acabar
 

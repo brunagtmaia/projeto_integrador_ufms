@@ -61,3 +61,12 @@ Quem for montar o formulário pode reutilizar (definidas em `globals.css`):
 - `headline`, `body-text`, `label-text`
 - `btn-primario`, `btn-secundario`, `btn-invertido`, `btn-contorno`
 - `cartao`
+
+## Tela `/mapa`
+
+Segue o mockup (mapa em cima, “Casos registrados” embaixo). O **menu continua o lateral** do layout — não há barra inferior nem perfil (MVP sem login).
+
+- Mapa: **Leaflet + OpenStreetMap** (gratuito, marca endereços com lat/lng).
+- Lista: dados em `lib/denuncias-exemplo.js` (sem banco). Clicar num caso foca o ponto. **Filtrar** alterna Todos / Pendentes / Resolvidos.
+- Layout **responsivo**: no celular o mapa fica em cima e a lista embaixo; em tela larga, mapa à esquerda e lista à direita.
+- Botão **Centralizar** (no mapa): enquadra todas as denúncias visíveis (as do filtro atual).

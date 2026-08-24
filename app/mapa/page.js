@@ -1,21 +1,21 @@
-// Rota: /mapa
-// Pasta app/mapa + page.js = URL /mapa.
+// =============================================================================
+// PÁGINA /mapa  →  arquivo: app/mapa/page.js
+// =============================================================================
+// No App Router, o NOME DA PASTA vira a URL. Esta pasta se chama "mapa",
+// então o endereço é http://localhost:3000/mapa
 //
-// MVP: tela de mapa com os pontos das denúncias (pode ser lista + mapa simples).
-// Stack prevista: Leaflet + OpenStreetMap (ainda não instalados neste passo).
+// Este arquivo é um Server Component (não tem "use client"): só define o
+// título da aba e chama TelaMapa, que é a parte interativa (mapa + lista).
+//
+// O menu hambúrguer NÃO é desenhado aqui. Ele está no layout raiz.
+// =============================================================================
 
-import PlaceholderTela from "../../components/PlaceholderTela";
+import TelaMapa from "../../components/mapa/TelaMapa";
 
 export const metadata = {
   title: "Mapa de denúncias",
 };
 
 export default function PaginaMapa() {
-  // Quem for fazer o mapa: Leaflet entra neste arquivo (depois de instalar a lib).
-  return (
-    <PlaceholderTela
-      titulo="Mapa"
-      descricao="Pontos das denúncias em lista + mapa simples."
-    />
-  );
+  return <TelaMapa />;
 }

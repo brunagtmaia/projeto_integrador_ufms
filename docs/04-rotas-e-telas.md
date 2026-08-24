@@ -39,15 +39,17 @@ Cada `page.js` pode exportar `metadata` só com o **título da aba** (`Nova den�
 
 O `.map` percorre o array e cria um `Link` do Next.js para cada tela. **Para adicionar um botão**, acrescente um objeto no array, crie a pasta com `page.js` **e** inclua o mesmo destino em `components/MenuLateral.js`.
 
-## As outras quatro telas (placeholders)
+## Placeholders (denúncia, acompanhar, prefeitura)
 
-Elas ainda **não** têm formulário ou mapa. Todas usam o componente `components/PlaceholderTela.js`, que mostra:
+Essas três rotas ainda **não** têm formulário. Usam `components/PlaceholderTela.js`:
 
 - link **Voltar à Home** (`href="/"`);
 - título e descrição;
 - o aviso de que a tela será implementada depois.
 
-**Quem for desenvolver uma tela de verdade:** abra o `page.js` daquela rota e substitua o `<PlaceholderTela ... />` pelo formulário/mapa. Não precisa criar outra URL.
+**Quem for desenvolver:** abra o `page.js` daquela rota e substitua o `<PlaceholderTela ... />`. Não precisa criar outra URL.
+
+A rota **`/mapa` já está implementada** (`components/mapa/`): mapa + lista + Centralizar. Não usa placeholder.
 
 ## Por que `Link` e não `<a>`?
 
@@ -68,4 +70,4 @@ Isso está em [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) e no [mpv.md]
 2. Abra [http://localhost:3000](http://localhost:3000)
 3. No canto superior esquerdo, clique no ícone de menu (três linhas) para **abrir** o menu lateral. O X, o fundo escuro ou a tecla Esc **fecham**.
 4. Clique em cada item do menu. A URL na barra deve mudar (`/denuncia`, `/mapa`, …).
-5. Em cada tela (exceto a Home), o link **Voltar à Home** também deve funcionar.
+5. Em cada tela placeholder, o link **Voltar à Home** também deve funcionar. Em `/mapa`, teste o mapa, o filtro e o botão **Centralizar**.

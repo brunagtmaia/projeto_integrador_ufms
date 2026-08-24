@@ -38,7 +38,7 @@ Quando aparecer uma palavra estranha no código ou nas reuniões, volte nesta li
 | **`npm run dev`** | Liga o servidor de desenvolvimento. Deixe o terminal aberto. |
 | **Placeholder** | Tela temporária (“ainda não implementada”) só para a rota existir. |
 | **MVP** | Produto mínimo viável — só o essencial. |
-| **Leaflet / OSM** | Biblioteca de mapa + mapas gratuitos do OpenStreetMap. Ainda não está instalado. |
+| **Leaflet / OSM** | Leaflet desenha o mapa; OpenStreetMap fornece as ruas (grátis). Já usado em `/mapa`. |
 | **Deploy / Vercel** | Colocar o site na internet. Combinamos Vercel no MVP. |
 | **`public/`** | Arquivos que o navegador baixa direto (ícones, fotos em `uploads/`). |
 
