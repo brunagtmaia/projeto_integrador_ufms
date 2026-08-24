@@ -1,3 +1,5 @@
+> Índice da documentação (para iniciantes): [README.md](./README.md).
+
 ## O que simplificar no produto
 
 **MVP mínimo**

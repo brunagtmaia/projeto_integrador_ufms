@@ -4,6 +4,8 @@ App web do projeto integrador (MVP): denúncias sem login, acompanhamento por pr
 
 Stack: **Next.js (App Router, JavaScript)**, Tailwind, API nas rotas do Next, SQLite + Prisma, Leaflet.
 
+**Documentação para o grupo (iniciantes):** comece em [`docs/README.md`](docs/README.md). A lista de cada pasta/arquivo está em [`docs/03-estrutura-do-projeto.md`](docs/03-estrutura-do-projeto.md).
+
 ## Desenvolvimento
 
 ```bash

@@ -1,3 +1,5 @@
+> Comece pelo índice: [README.md](./README.md). Estrutura de pastas: [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md).
+
 ## Arquitetura, tecnologias e como configurar o projeto na sua máquina
 
 Hoje o repositório já tem o **Next.js** (JavaScript + App Router + Tailwind). Banco (Prisma + SQLite), mapa (Leaflet) e as telas de denúncia ainda entram nos próximos passos do MVP.
