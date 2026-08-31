@@ -266,6 +266,7 @@ export default function PaginaDenuncia() {
             min-height: auto;
             border-radius: 10px;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+            
           }
         }
       `}</style>
