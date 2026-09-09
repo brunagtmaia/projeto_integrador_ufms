@@ -14,6 +14,7 @@ Se você acabou de clonar o repositório, comece por aqui, **nesta ordem**:
 | 6 | [08-identidade-e-menu.md](./08-identidade-e-menu.md) | **Cores, Poppins, ícones Material e o menu lateral** |
 | 7 | [05-como-contribuir.md](./05-como-contribuir.md) | Como editar o código sem quebrar o trabalho das outras |
 | 8 | [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) | O que **não** fazer neste MVP |
+| 9 | [09-planejamento-checkouts.md](./09-planejamento-checkouts.md) | Plano dos check-outs 2–4 (front, banco/backend, testes) e branches |
 
 ## Textos que já existiam
 
@@ -26,7 +27,8 @@ O nome `mpv.md` é um typo antigo de **MVP** (Minimum Viable Product = produto m
 
 ## Pastas extras dentro de `docs/`
 
-- `chats/` e `checkouts-ufms/` — pastas reservadas; hoje não têm conteúdo.
+- `chats/` — pasta reservada.
+- `checkouts-ufms/` — textos dos check-outs da disciplina (P01, P02). O plano de execução dos módulos restantes está em [09-planejamento-checkouts.md](./09-planejamento-checkouts.md).
 - `ideias_layouts/` — imagens do guia visual (cores, botões). Explicação no código: [08-identidade-e-menu.md](./08-identidade-e-menu.md).
 
 ## Dica
