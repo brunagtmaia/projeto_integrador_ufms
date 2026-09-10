@@ -1,23 +1,21 @@
-// Rota: /prefeitura
-// Pasta app/prefeitura + page.js = URL /prefeitura.
+// =============================================================================
+// PÁGINA /prefeitura
+// =============================================================================
+// Pasta app/prefeitura + page.js = URL /prefeitura
 //
 // MVP: marcar denúncia como resolvido.
-// NÃO é um sistema de usuários (cadastro/login). A ideia é uma senha
-// de "prefeitura" no arquivo .env (ADMIN_PASSWORD).
-// Esta pasta só cria a URL; a senha e o botão "resolvido" vêm depois.
+// NÃO é um sistema de usuários (cadastro/login). No check-out 2 a senha de
+// teste é "prefeitura" (só no front). No check-out 3 vira ADMIN_PASSWORD no .env.
+//
+// A interação fica em components/prefeitura/TelaPrefeitura.js (cliente).
+// =============================================================================
 
-import PlaceholderTela from "../../components/PlaceholderTela";
+import TelaPrefeitura from "../../components/prefeitura/TelaPrefeitura";
 
 export const metadata = {
   title: "Marcar como resolvido",
 };
 
 export default function PaginaPrefeitura() {
-  // Quem for fazer "resolvido": campo de senha (ADMIN_PASSWORD no .env) aqui.
-  return (
-    <PlaceholderTela
-      titulo="Marcar como resolvido"
-      descricao="Tela da prefeitura: senha no .env, sem sistema de usuários."
-    />
-  );
+  return <TelaPrefeitura />;
 }

@@ -29,7 +29,7 @@ const poppins = Poppins({
 // metadata = título da ABA do navegador e texto para buscadores.
 // Cada page.js pode sobrescrever só o "title".
 export const metadata = {
-  title: "Denúncias — MVP",
+  title: "FiscalizApp",
   description:
     "Registrar denúncia sem login, acompanhar por protocolo, ver o mapa e marcar como resolvido.",
 };

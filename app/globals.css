@@ -79,7 +79,7 @@ body {
 
 /* Hierarquia de texto do guia: título grande, corpo, rótulo pequeno */
 .headline {
-  font-size: 1.75rem;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--secondary);
@@ -179,6 +179,13 @@ body {
 .mapa-area {
   height: 42vh;
   min-height: 260px;
+}
+
+@media (min-width: 768px) {
+  .mapa-area {
+    height: 48vh;
+    min-height: 320px;
+  }
 }
 
 @media (min-width: 1024px) {

@@ -10,6 +10,10 @@
 //   Celular  → coluna: mapa em cima, lista embaixo (flex-col)
 //   Desktop  → linha:  mapa à esquerda, lista à direita (lg:flex-row)
 //
+// Fase 6 (check-out 2): polimento visual — mesmos selos/cartões das outras
+// telas (acompanhar/prefeitura). Comportamento (filtro, clique, centralizar)
+// permanece igual.
+//
 // "use client" porque temos useState (filtro, cartão clicado, centralizar).
 //
 // dynamic(..., { ssr: false }) = NÃO renderiza o Leaflet no servidor.
@@ -90,7 +94,7 @@ export default function TelaMapa() {
         />
 
         {/* pointer-events-none: o selo não bloqueia o arrastar do mapa. */}
-        <p className="pointer-events-none absolute bottom-10 left-3 z-[5] flex max-w-[calc(100%-5.5rem)] items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-secondary shadow-[0_8px_16px_rgb(27_38_59_/_12%)] sm:text-sm">
+        <p className="pointer-events-none absolute bottom-10 left-3 z-[5] flex max-w-[calc(100%-5.5rem)] items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-secondary shadow-[var(--sombra)] sm:text-sm">
           <Icone nome="location_on" className="!text-lg text-primary" />
           {qtdPendentes} Pendentes
         </p>
@@ -99,7 +103,7 @@ export default function TelaMapa() {
         <button
           type="button"
           onClick={centralizarDenuncias}
-          className="absolute top-3 right-3 z-[5] flex items-center gap-1 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-white shadow-[0_8px_16px_rgb(27_38_59_/_18%)] sm:text-sm"
+          className="absolute top-3 right-3 z-[5] flex items-center gap-1 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-white shadow-[var(--sombra)] sm:text-sm"
           aria-label="Centralizar denúncias no mapa"
         >
           <Icone nome="center_focus_strong" className="!text-xl" />
@@ -107,93 +111,118 @@ export default function TelaMapa() {
         </button>
       </section>
 
-      <section className="flex min-h-0 flex-1 flex-col bg-white px-4 pt-4 pb-8 lg:w-[min(100%,24rem)] lg:shrink-0 lg:overflow-y-auto xl:w-[28rem]">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h1 className="text-base font-bold text-secondary sm:text-lg">
-            Casos registrados
-          </h1>
+      <section className="flex min-h-0 flex-1 flex-col bg-[var(--neutral)] px-4 pt-5 pb-8 sm:px-6 lg:w-[min(100%,26rem)] lg:shrink-0 lg:overflow-y-auto xl:w-[32rem]">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="label-text mb-1 uppercase text-primary">Mapa</p>
+            <h1 className="text-xl font-bold tracking-tight text-secondary sm:text-2xl">
+              Casos registrados
+            </h1>
+          </div>
           <button
             type="button"
             onClick={proximoFiltro}
-            className="flex items-center gap-1 text-sm font-medium text-primary"
+            className="btn-contorno !px-3 !py-2 text-sm"
           >
             <Icone nome="filter_list" className="!text-xl" />
-            Filtrar · {rotuloFiltro(filtro)}
+            {rotuloFiltro(filtro)}
           </button>
         </div>
 
-        <ul className="flex flex-col gap-3">
-          {lista.map((caso) => {
-            const resolvido = caso.status === "RESOLVIDO";
-            const ativo = caso.id === idSelecionado;
-            return (
-              <li key={caso.id}>
-                {/* Clicar no cartão = selecionar + voar até o marcador. */}
-                <button
-                  type="button"
-                  onClick={() => setIdSelecionado(caso.id)}
-                  className={`flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left ${
-                    resolvido
-                      ? "border-[var(--neutral-borda)] bg-[var(--neutral)]"
-                      : "border-[var(--neutral-borda)] bg-white"
-                  } ${ativo ? "ring-2 ring-primary" : ""}`}
-                >
-                  <span
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg sm:h-14 sm:w-14 ${
-                      resolvido ? "bg-[var(--neutral-borda)]" : "bg-tertiary"
-                    }`}
+        {lista.length === 0 ? (
+          <div
+            className="cartao border-dashed px-5 py-8 text-center"
+            role="status"
+          >
+            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--neutral-borda)] text-secondary">
+              <Icone nome="filter_list_off" className="!text-3xl" />
+            </span>
+            <h2 className="text-lg font-semibold text-secondary">
+              Nenhum caso neste filtro
+            </h2>
+            <p className="body-text mt-2">
+              Toque em Filtrar para ver Todos, Pendentes ou Resolvidos.
+            </p>
+          </div>
+        ) : (
+          <ul className="flex flex-col gap-3" aria-label="Lista de denúncias">
+            {lista.map((caso) => {
+              const resolvido = caso.status === "RESOLVIDO";
+              const ativo = caso.id === idSelecionado;
+              return (
+                <li key={caso.id}>
+                  {/* Clicar no cartão = selecionar + voar até o marcador. */}
+                  <button
+                    type="button"
+                    onClick={() => setIdSelecionado(caso.id)}
+                    className={`cartao flex w-full items-center gap-3 px-4 py-4 text-left transition ${
+                      resolvido ? "bg-[var(--neutral)]" : "bg-white"
+                    } ${ativo ? "ring-2 ring-primary" : ""}`}
                   >
-                    <Icone
-                      nome={resolvido ? "check_circle" : "image"}
-                      className={resolvido ? "text-secondary" : "text-primary"}
-                    />
-                  </span>
-
-                  <span className="min-w-0 flex-1">
                     <span
-                      className={`block truncate font-semibold text-secondary ${
-                        resolvido ? "line-through opacity-70" : ""
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14 ${
+                        resolvido ? "bg-[var(--neutral-borda)]" : "bg-tertiary"
                       }`}
                     >
-                      {caso.endereco}
+                      <Icone
+                        nome={resolvido ? "check_circle" : "image"}
+                        className={
+                          resolvido ? "text-secondary" : "text-primary"
+                        }
+                      />
                     </span>
-                    <span className="mt-0.5 block truncate text-sm text-[var(--texto-suave)]">
-                      {caso.descricao}
-                    </span>
-                    <span className="mt-1 flex flex-wrap items-center gap-2">
+
+                    <span className="min-w-0 flex-1">
                       <span
-                        className={`rounded px-2 py-0.5 text-[10px] font-bold tracking-wide ${
-                          resolvido
-                            ? "bg-[#d6eaf8] text-[#1a5276]"
-                            : "bg-[#fadbd8] text-[#922b21]"
+                        className={`block truncate font-semibold text-secondary ${
+                          resolvido ? "line-through opacity-70" : ""
                         }`}
                       >
-                        {caso.status}
+                        {caso.endereco}
                       </span>
-                      <span className="text-xs text-[var(--texto-suave)]">
-                        #{caso.id}
+                      <span className="mt-0.5 block truncate text-sm text-[var(--texto-suave)]">
+                        {caso.descricao}
+                      </span>
+                      <span className="mt-2 flex flex-wrap items-center gap-2">
+                        {/* Mesmos selos de /acompanhar e /prefeitura */}
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                            resolvido
+                              ? "bg-tertiary text-primary"
+                              : "bg-amber-100 text-amber-900"
+                          }`}
+                        >
+                          {resolvido ? "Resolvido" : "Pendente"}
+                        </span>
+                        <span className="label-text text-[var(--texto-suave)]">
+                          #{caso.id}
+                        </span>
                       </span>
                     </span>
-                  </span>
 
-                  {/* Quadradinho do mockup. NÃO grava no servidor. */}
-                  <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 ${
-                      resolvido
-                        ? "border-secondary bg-secondary text-white"
-                        : "border-[var(--texto-suave)] bg-white"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {resolvido ? (
-                      <Icone nome="check" className="!text-base text-white" />
-                    ) : null}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+                    {/* Quadradinho do mockup. NÃO grava no servidor. */}
+                    <span
+                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 ${
+                        resolvido
+                          ? "border-secondary bg-secondary text-white"
+                          : "border-[var(--texto-suave)] bg-white"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {resolvido ? (
+                        <Icone nome="check" className="!text-base text-white" />
+                      ) : null}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <p className="body-text mt-6 text-center text-sm opacity-80">
+          Check-out 2: pontos de exemplo. No check-out 3 virão do banco.
+        </p>
       </section>
     </div>
   );

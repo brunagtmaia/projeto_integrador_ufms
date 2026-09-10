@@ -12,12 +12,15 @@ Este arquivo organiza o que ainda falta entregar na disciplina, com base no que 
 | --- | --- | --- |
 | P01 (módulos anteriores) | Concluído | Requisitos, escopo, fundamentação e base do projeto |
 | P02 · Módulo 1 | Concluído | Resolução de problemas e análise de requisitos ([P02_M1](./checkouts-ufms/P02/P02_M1.md)) |
-| Código base | Em andamento | Next.js, menu, Home, **`/mapa`** com Leaflet (dados de exemplo) |
-| Telas `/denuncia`, `/acompanhar`, `/prefeitura` | Pendente | Ainda usam placeholder |
+| Código base / check-out 2 | Telas prontas (mock) | Next.js, Home, denúncia, sucesso, acompanhar, mapa, prefeitura |
+| `/denuncia` | Layout visual pronto | **Não redesenhar**; Enviar → sucesso com protocolo mock |
+| `/denuncia/sucesso` | Feito (check-out 2) | Protocolo na URL, copiar, links |
+| `/acompanhar` | Feito (check-out 2) | Consulta por protocolo (mock) |
+| `/prefeitura` | Feito (check-out 2) | Senha `prefeitura` + marcar resolvido (só na tela) |
 | Banco (Prisma + SQLite) e APIs | Pendente | Pasta `app/api/` reservada; `schema.prisma` ainda falta |
 | Testes automatizados | Pendente | Ainda não definidos neste repositório |
 
-Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). O que fica fora do MVP: [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
+Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). Guia completo do check-out 2 (telas): [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md). O que fica fora do MVP: [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
 
 ---
 
@@ -25,7 +28,7 @@ Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). O que fica for
 
 | Check-out | Módulo da disciplina | Foco do grupo | Branch Git |
 | --- | --- | --- | --- |
-| **2** | Desenvolvimento Web com Frameworks e HTML/CSS | **Todas as telas Frontend** | `checkout-2-frontend` |
+| **2** | Desenvolvimento Web com Frameworks e HTML/CSS | **Todas as telas Frontend** | `checkout2` |
 | **3** | Banco de Dados e Controle de Versão | **Banco de dados + Backend** | `checkout-3-banco-backend` |
 | **4** | Testes e Garantia de Qualidade | **Testes automatizados** | `checkout-4-testes` |
 
@@ -39,20 +42,25 @@ Ordem sugerida de trabalho: **2 → 3 → 4**, porque o front define o contrato 
 
 **Objetivo:** terminar o desenvolvimento visual e de interação de **todas** as telas do MVP, ainda podendo usar dados fictícios onde o banco ainda não existir.
 
+**Guia detalhado (para iniciantes):** [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md).
+
 ### Escopo
 
-1. **Home (`/`)** — revisar botões, textos e navegação (já existe; só ajustes se necessário).
-2. **Nova denúncia (`/denuncia`)** — substituir o placeholder pelo formulário completo (localização, foto, confirmação visual do protocolo — mesmo que o protocolo ainda seja simulado até o check-out 3).
-3. **Acompanhar (`/acompanhar`)** — tela de consulta por protocolo (layout + estados: encontrado / não encontrado / carregando).
-4. **Mapa (`/mapa`)** — já implementado; alinhar com o visual das outras telas e preparar para trocar dados de exemplo pelos dados reais no check-out 3.
-5. **Prefeitura (`/prefeitura`)** — tela para marcar denúncia como resolvida (campo de senha + lista/ação visual).
-6. **Identidade e responsividade** — manter cores, Poppins, ícones e menu ([08-identidade-e-menu.md](./08-identidade-e-menu.md)); priorizar **mobile-first**.
+1. **Home (`/`)** — visual FiscalizApp (saudação + 4 ações), **sem** ilustração e **sem** ícone de perfil/login.
+2. **Nova denúncia (`/denuncia`)** — layout visual **já pronto; não redesenhar**. Só um `onClick` mínimo no botão Enviar para ir à tela de sucesso.
+3. **Denúncia criada (`/denuncia/sucesso`)** — mostrar protocolo (ex.: `?protocolo=748393`), copiar e links (protocolo ainda simulado até o check-out 3).
+4. **Acompanhar (`/acompanhar`)** — consulta por protocolo (estados: vazio / carregando / encontrado / não encontrado), usando mock.
+5. **Mapa (`/mapa`)** — Leaflet + lista; visual alinhado às outras telas (fase 6); dados reais no check-out 3.
+6. **Prefeitura (`/prefeitura`)** — senha de teste no front: `prefeitura` + lista + marcar resolvido (só na tela).
+7. **Identidade e responsividade** — cores, Poppins, ícones e menu ([08-identidade-e-menu.md](./08-identidade-e-menu.md)); **mobile-first**.
 
 ### Critérios de “pronto” deste check-out
 
 - Nenhuma rota do MVP permanece só com `PlaceholderTela`.
+- Layout de `/denuncia` não foi redesenhado.
+- `/denuncia/sucesso` existe e o Enviar navega até ela.
 - Navegação Home ↔ menu ↔ telas funciona em desktop e celular.
-- Formulários e feedbacks de UI estão claros (mesmo com mock de API, se preciso).
+- Formulários e feedbacks de UI estão claros (mesmo com mock).
 - Escopo **não** inclui login, cadastro ou “minhas denúncias”.
 
 ### Branch
@@ -60,8 +68,10 @@ Ordem sugerida de trabalho: **2 → 3 → 4**, porque o front define o contrato 
 ```text
 git checkout main
 git pull
-git checkout -b checkout-2-frontend
+git checkout -b checkout2
 ```
+
+(A branch `checkout2` já pode existir no repositório local — use `git checkout checkout2` se for o caso.)
 
 Ao finalizar o check-out 2: abrir PR / merge em `main` (ou manter a branch até o merge final combinado pelo grupo — o importante é **não misturar** escopo de 3 e 4 nesta branch).
 
@@ -136,7 +146,7 @@ Preferência: partir da `main` **já com** front + backend mergeados.
 
 Regra combinada pelo grupo:
 
-1. **Uma branch dedicada para cada check-out** (`checkout-2-frontend`, `checkout-3-banco-backend`, `checkout-4-testes`).
+1. **Uma branch dedicada para cada check-out** (`checkout2`, `checkout-3-banco-backend`, `checkout-4-testes`).
 2. Trabalho do check-out **só** na branch correspondente (evita misturar front, banco e testes no mesmo commit confuso).
 3. Ao concluir cada etapa, **merge na `main`** (via PR no GitHub, se o grupo usar).
 4. **Versão final da disciplina:** `main` contendo o merge de tudo (front + banco/backend + testes) — essa é a baseline estável para entrega/demo.
@@ -146,10 +156,10 @@ Regra combinada pelo grupo:
 ```text
 main
   │
-  ├── checkout-2-frontend  ──(merge)──► main
-  │                                        │
+  ├── checkout2  ──(merge)──► main
+  │                              │
   ├── checkout-3-banco-backend ──(merge)──► main
-  │                                        │
+  │                              │
   └── checkout-4-testes ──(merge)─────────► main  = versão final
 ```
 
@@ -168,12 +178,15 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 
 ### Check-out 2
 
-- [ ] `/denuncia` sem placeholder
-- [ ] `/acompanhar` sem placeholder
-- [ ] `/prefeitura` sem placeholder
-- [ ] `/mapa` alinhada ao restante do visual
-- [ ] Responsivo mobile
-- [ ] Branch `checkout-2-frontend` mergeada na `main`
+- [x] Documentação do check-out 2 ([10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md))
+- [x] `/denuncia` — só `onClick` no Enviar (layout intacto; protocolo = `id` aleatório do mock)
+- [x] `/denuncia/sucesso` com protocolo na URL
+- [x] `/acompanhar` sem placeholder
+- [x] `/prefeitura` sem placeholder (senha de teste `prefeitura`)
+- [x] Home aproximada do mockup FiscalizApp (sem perfil, sem ilustração, 4 ações)
+- [x] `/mapa` alinhada ao restante do visual (polimento fase 6)
+- [x] Responsivo mobile (layout mobile-first + menu lateral)
+- [ ] Branch `checkout2` mergeada na `main`
 
 ### Check-out 3
 
@@ -201,3 +214,4 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 | [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) | O que **não** fazer agora |
 | [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md) | Stack, `.env`, Prisma |
 | [checkouts-ufms/P02/P02_M1.md](./checkouts-ufms/P02/P02_M1.md) | Texto do módulo 1 já entregue |
+| [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md) | Guia das telas do check-out 2 (iniciantes) |

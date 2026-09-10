@@ -2,97 +2,133 @@
 // HOME — URL: /
 // =============================================================================
 // No App Router, app/page.js é sempre a página inicial.
-// O MVP pede "Home com os botões": daqui a pessoa escolhe a tela.
+// Visual inspirado no mockup FiscalizApp (docs/ideias_layouts/), sem ilustração
+// e SEM ícone de perfil/login (MVP não tem conta).
 //
 // Os mesmos destinos existem no menu lateral (components/MenuLateral.js).
-// Os botões da Home são o atalho visual; o menu é a navegação permanente.
 // =============================================================================
 
 import Link from "next/link";
 import Icone from "../components/Icone";
 
-// Array das telas. Para incluir outra no futuro:
+// Array das ações. Para incluir outra no futuro:
 // 1) crie app/nova-pasta/page.js
 // 2) acrescente um objeto aqui
 // 3) acrescente o mesmo href em MenuLateral.js
 const telas = [
   {
     href: "/denuncia",
-    titulo: "Nova denúncia",
-    descricao: "Localização + foto + gerar protocolo (sem login)",
-    icone: "add_a_photo",
-    estilo: "primario",
+    titulo: "Criar Denúncia",
+    descricao: "Registrar novo lote irregular",
+    icone: "add",
+    destaque: true,
+    corIcone: "bg-white/20 text-white",
   },
   {
     href: "/acompanhar",
-    titulo: "Acompanhar",
-    descricao: "Consulta só pelo número do protocolo",
-    icone: "search",
-    estilo: "secundario",
+    titulo: "Acompanhar Denúncia",
+    descricao: "Via protocolo",
+    icone: "description",
+    destaque: false,
+    corIcone: "bg-sky-100 text-sky-700",
   },
   {
     href: "/mapa",
-    titulo: "Mapa",
-    descricao: "Pontos das denúncias (lista + mapa)",
-    icone: "map",
-    estilo: "contorno",
+    titulo: "Consultar Pontos",
+    descricao: "Mapa de áreas",
+    icone: "location_on",
+    destaque: false,
+    corIcone: "bg-primary/15 text-primary",
   },
   {
     href: "/prefeitura",
-    titulo: "Marcar como resolvido",
-    descricao: "Tela da prefeitura (senha no .env)",
+    titulo: "Prefeitura",
+    descricao: "Marcar denúncia como resolvida",
     icone: "task_alt",
-    estilo: "invertido",
+    destaque: false,
+    corIcone: "bg-secondary/10 text-secondary",
   },
 ];
 
-// Escolhe a classe CSS do botão (definidas em app/globals.css).
-// Assim o JSX da Home não fica cheio de if.
-function classeDoBotao(estilo) {
-  if (estilo === "primario") return "btn-primario";
-  if (estilo === "secundario") return "btn-secundario";
-  if (estilo === "invertido") return "btn-invertido";
-  return "btn-contorno";
-}
-
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col items-center px-4 py-10">
-      <main className="flex w-full max-w-md flex-col gap-8">
-        <header className="cartao px-5 py-6">
-          <p className="label-text mb-2 uppercase text-primary">MVP</p>
-          <h1 className="headline">Denúncias</h1>
-          <p className="body-text mt-2">
-            Escolha uma tela. Os botões seguem o guia visual do grupo (Poppins +
-            Material).
+    <div className="flex flex-1 flex-col items-center px-4 py-8 md:py-12">
+      <main className="flex w-full max-w-md flex-col gap-8 md:max-w-2xl lg:max-w-3xl">
+        {/* Saudação — sem ilustração (decisão fase 5: opção C) */}
+        <header className="md:max-w-xl">
+          <h1 className="headline text-[1.85rem] md:text-[2.15rem]">
+            Olá, Cidadão!
+          </h1>
+          <p className="body-text mt-3 leading-relaxed md:text-lg">
+            Denuncie lotes vagos com mato alto ou irregularidades para
+            construirmos um espaço urbano{" "}
+            <span className="font-semibold text-primary">
+              mais seguro e limpo
+            </span>{" "}
+            para todos.
           </p>
         </header>
 
-        <nav className="flex flex-col gap-3" aria-label="Telas do MVP">
-          {/*
-            map = para cada item do array, cria um Link.
-            key = o React exige um id único em listas; usamos a URL.
-            Link (next/link) troca de página SEM recarregar o site inteiro.
-            Não use <a href="/mapa"> para páginas internas.
-          */}
-          {telas.map((tela) => (
-            <Link
-              key={tela.href}
-              href={tela.href}
-              className={`${classeDoBotao(tela.estilo)} w-full !justify-start px-5 py-4`}
-            >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15">
-                <Icone nome={tela.icone} />
-              </span>
-              <span className="text-left">
-                <span className="block text-base font-semibold">{tela.titulo}</span>
-                <span className="mt-0.5 block text-sm font-normal opacity-90">
-                  {tela.descricao}
+        <section aria-labelledby="acoes-principais">
+          <h2
+            id="acoes-principais"
+            className="label-text mb-3 uppercase tracking-wide text-[var(--texto-suave)]"
+          >
+            Ações principais
+          </h2>
+
+          <nav
+            className="flex flex-col gap-3 md:grid md:grid-cols-2"
+            aria-label="Telas do MVP"
+          >
+            {/*
+              map = para cada item do array, cria um Link.
+              key = o React exige um id único em listas; usamos a URL.
+              Link (next/link) troca de página SEM recarregar o site inteiro.
+            */}
+            {telas.map((tela) => (
+              <Link
+                key={tela.href}
+                href={tela.href}
+                className={
+                  tela.destaque
+                    ? "btn-primario w-full !justify-between !rounded-[var(--raio)] px-4 py-4 md:col-span-2 md:py-5"
+                    : "cartao flex w-full items-center justify-between gap-3 px-4 py-4 transition hover:border-primary/40 md:py-5"
+                }
+              >
+                <span className="flex min-w-0 items-center gap-3">
+                  <span
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tela.corIcone}`}
+                  >
+                    <Icone nome={tela.icone} />
+                  </span>
+                  <span className="text-left">
+                    <span className="block text-base font-semibold">
+                      {tela.titulo}
+                    </span>
+                    <span
+                      className={`mt-0.5 block text-sm font-normal ${
+                        tela.destaque
+                          ? "opacity-90"
+                          : "text-[var(--texto-suave)]"
+                      }`}
+                    >
+                      {tela.descricao}
+                    </span>
+                  </span>
                 </span>
-              </span>
-            </Link>
-          ))}
-        </nav>
+                <Icone
+                  nome="chevron_right"
+                  className={`!text-2xl shrink-0 ${
+                    tela.destaque
+                      ? "opacity-90"
+                      : "text-[var(--texto-suave)]"
+                  }`}
+                />
+              </Link>
+            ))}
+          </nav>
+        </section>
       </main>
     </div>
   );

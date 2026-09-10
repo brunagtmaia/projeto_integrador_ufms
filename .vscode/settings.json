@@ -1,0 +1,20 @@
+{
+    "editor.wordWrap": "on",
+    "cursor.composer.collapsePaneInputBoxPills": true,
+    "cursor.inlineDiff.mode": "diffs",
+    "cursor.windowSwitcher.sidebarHoverCollapsed": true,
+    "dbcode.color.applyToActiveTabBorderTop": true,
+    "editor.stickyTabStops": true,
+    "workbench.list.openMode": "singleClick",
+    "editor.padding.top": 10,
+    "dart.openDevTools": "flutter",
+    "workbench.panel.defaultLocation": "bottom",
+    "workbench.activityBar.location": "default",
+    "workbench.editor.highlightModifiedTabs": true,
+    "editor.tabCompletion": "on",
+    "editor.tabFocusMode": false,
+    "workbench.editor.enablePreview": true,
+    "workbench.editor.showTabs": "multiple",
+    "workbench.editor.tabSizing": "fit",
+    "workbench.editor.closeOnFileDelete": true
+}

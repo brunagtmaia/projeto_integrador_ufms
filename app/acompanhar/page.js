@@ -1,22 +1,35 @@
-// Rota: /acompanhar
-// Pasta app/acompanhar + page.js = URL /acompanhar.
+// =============================================================================
+// PÁGINA /acompanhar
+// =============================================================================
+// Pasta app/acompanhar + page.js = URL /acompanhar
 //
 // MVP: acompanhar a denúncia SÓ pelo número do protocolo
 // (sem cadastro, sem "minhas denúncias").
-// Depois: um campo para digitar o protocolo e mostrar o status.
+//
+// A consulta de verdade fica em components/acompanhar/TelaAcompanhar.js
+// (cliente: campo, estados, mock).
+//
+// Suspense: useSearchParams (pré-preenche ?protocolo=) exige um fallback
+// no App Router — mesmo padrão de /denuncia/sucesso.
+// =============================================================================
 
-import PlaceholderTela from "../../components/PlaceholderTela";
+import { Suspense } from "react";
+import TelaAcompanhar from "../../components/acompanhar/TelaAcompanhar";
 
 export const metadata = {
   title: "Acompanhar denúncia",
 };
 
 export default function PaginaAcompanhar() {
-  // Quem for fazer a consulta: campo de protocolo + resultado no lugar do placeholder.
   return (
-    <PlaceholderTela
-      titulo="Acompanhar"
-      descricao="Consulta o andamento só com o número do protocolo."
-    />
+    <Suspense
+      fallback={
+        <div className="flex flex-1 items-center justify-center px-4 py-10">
+          <p className="body-text">Carregando consulta…</p>
+        </div>
+      }
+    >
+      <TelaAcompanhar />
+    </Suspense>
   );
 }

@@ -11,12 +11,21 @@ O que é Next.js (e as outras bibliotecas): [07-bibliotecas.md](./07-bibliotecas
 3. O **nome da pasta** vira o caminho:
 
 ```text
-app/page.js                 →  http://localhost:3000/
-app/denuncia/page.js        →  http://localhost:3000/denuncia
-app/acompanhar/page.js      →  http://localhost:3000/acompanhar
-app/mapa/page.js            →  http://localhost:3000/mapa
-app/prefeitura/page.js      →  http://localhost:3000/prefeitura
+app/page.js                        →  http://localhost:3000/
+app/denuncia/page.js               →  http://localhost:3000/denuncia
+app/denuncia/sucesso/page.js       →  http://localhost:3000/denuncia/sucesso
+app/acompanhar/page.js             →  http://localhost:3000/acompanhar
+app/mapa/page.js                   →  http://localhost:3000/mapa
+app/prefeitura/page.js             →  http://localhost:3000/prefeitura
 ```
+
+A tela de sucesso usa query string, por exemplo:
+
+```text
+/denuncia/sucesso?protocolo=748393
+```
+
+Plano completo das telas do check-out 2: [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md).
 
 Não existe um arquivo `routes.js` listando URLs. A **árvore de pastas** é a lista de rotas.
 
@@ -39,17 +48,20 @@ Cada `page.js` pode exportar `metadata` só com o **título da aba** (`Nova den�
 
 O `.map` percorre o array e cria um `Link` do Next.js para cada tela. **Para adicionar um botão**, acrescente um objeto no array, crie a pasta com `page.js` **e** inclua o mesmo destino em `components/MenuLateral.js`.
 
-## Placeholders (denúncia, acompanhar, prefeitura)
+## Situação das telas (check-out 2)
 
-Essas três rotas ainda **não** têm formulário. Usam `components/PlaceholderTela.js`:
+| Rota | Situação |
+| --- | --- |
+| `/` (Home) | Implementada; no check-out 2 aproxima do mockup FiscalizApp |
+| `/denuncia` | **Layout visual já feito** — não redesenhar; Enviar sorteia `id` do mock → sucesso |
+| `/denuncia/sucesso` | **Feita** — mostra o protocolo (`?protocolo=`), copiar e links |
+| `/acompanhar` | **Feita** — consulta por protocolo (mock); estados vazio / carregando / encontrado / não encontrado |
+| `/mapa` | Já implementada (`components/mapa/`): mapa + lista + Centralizar |
+| `/prefeitura` | **Feita** — senha de teste `prefeitura` + lista de pendentes + marcar resolvido (só na memória) |
 
-- link **Voltar à Home** (`href="/"`);
-- título e descrição;
-- o aviso de que a tela será implementada depois.
+Acompanhar, sucesso e prefeitura já estão feitos no check-out 2 (front/mock).
 
-**Quem for desenvolver:** abra o `page.js` daquela rota e substitua o `<PlaceholderTela ... />`. Não precisa criar outra URL.
-
-A rota **`/mapa` já está implementada** (`components/mapa/`): mapa + lista + Centralizar. Não usa placeholder.
+Detalhes, fluxos e checklist: [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md).
 
 ## Por que `Link` e não `<a>`?
 
@@ -70,4 +82,4 @@ Isso está em [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) e no [mpv.md]
 2. Abra [http://localhost:3000](http://localhost:3000)
 3. No canto superior esquerdo, clique no ícone de menu (três linhas) para **abrir** o menu lateral. O X, o fundo escuro ou a tecla Esc **fecham**.
 4. Clique em cada item do menu. A URL na barra deve mudar (`/denuncia`, `/mapa`, …).
-5. Em cada tela placeholder, o link **Voltar à Home** também deve funcionar. Em `/mapa`, teste o mapa, o filtro e o botão **Centralizar**.
+5. Em `/prefeitura`, use a senha `prefeitura`, marque um item como resolvido e confira que ele some da lista. Em `/mapa`, teste o mapa, o filtro e o botão **Centralizar**. Roteiro completo: [guia do check-out 2](./10-checkout2-frontend-telas.md#11-como-testar-passo-a-passo).

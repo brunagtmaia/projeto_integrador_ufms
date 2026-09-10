@@ -26,8 +26,8 @@ import Icone from "./Icone";
 
 export default function PlaceholderTela({ titulo, descricao }) {
   return (
-    <div className="flex flex-1 flex-col items-center px-4 py-10">
-      <main className="flex w-full max-w-md flex-col gap-6">
+    <div className="flex flex-1 flex-col items-center px-4 py-10 md:py-12">
+      <main className="flex w-full max-w-md flex-col gap-6 md:max-w-lg">
         {/* href="/" volta para app/page.js (a Home). Link do Next = sem recarregar o site. */}
         <Link href="/" className="btn-contorno w-fit px-4 py-2 text-sm">
           <Icone nome="arrow_back" className="!text-xl" />

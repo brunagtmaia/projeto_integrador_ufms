@@ -2,10 +2,11 @@
 // Como o Next.js descobre isso: pasta app/denuncia + arquivo page.js = URL /denuncia.
 //
 // MVP (docs/mpv.md): denúncia SEM login — localização + foto + gerar protocolo.
-// Esta página só reserva a rota. Quem for fazer o formulário edita ESTE arquivo
-// (troca o PlaceholderTela pelo formulário de verdade).
+// Layout visual: NÃO redesenhar (combinado no check-out 2).
+// Só o botão Enviar ganhou onClick → /denuncia/sucesso (ver BotaoEnviarDenuncia).
+// Responsivo: mobile full-width; desktop até ~36rem com tipografia legível.
 
-// import PlaceholderTela from "../../components/PlaceholderTela";
+import BotaoEnviarDenuncia from "../../components/denuncia/BotaoEnviarDenuncia";
 
 // Título da aba do navegador nesta página (sobrescreve o do layout).
 export const metadata = {
@@ -58,52 +59,52 @@ export default function PaginaDenuncia() {
             placeholder="Detalhes sobre o problema..."
           />
 
-          {/* Enviar */}
-          <button type="button" className="botao-enviar">
-            <span>▷</span>
-            Enviar Denúncia
-          </button>
+          {/* Enviar: mesmo visual; clique sorteia id do mock e vai ao sucesso */}
+          <BotaoEnviarDenuncia />
         </div>
       </main>
 
-      {/* CSS da página */}
+      {/* CSS da página — escala legível no mobile; container mais largo no desktop */}
       <style>{`
         * {
           box-sizing: border-box;
         }
 
         .denuncia {
-          min-height: 100vh;
+          flex: 1;
+          width: 100%;
+          min-height: 100%;
           background: #f5f6f7;
           display: flex;
           justify-content: center;
           color: #222;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: var(--font-poppins), "Poppins", Arial, Helvetica, sans-serif;
+          padding: 0;
         }
 
         .denuncia-container {
           width: 100%;
-          max-width: 390px;
-          min-height: 100vh;
+          max-width: 28rem;
+          min-height: 100%;
           background: #fff;
-          padding: 28px 16px 24px;
+          padding: 1.5rem 1.25rem 2rem;
         }
 
         /* Título */
 
         .denuncia h1 {
           margin: 0;
-          font-size: 18px;
-          line-height: 1.2;
+          font-size: 1.35rem;
+          line-height: 1.25;
           font-weight: 600;
           color: #222;
         }
 
         .subtitulo {
-          margin: 6px 0 16px;
-          max-width: 285px;
-          font-size: 11px;
-          line-height: 1.45;
+          margin: 0.5rem 0 1.25rem;
+          max-width: 36rem;
+          font-size: 0.9375rem;
+          line-height: 1.5;
           color: #686868;
         }
 
@@ -115,7 +116,7 @@ export default function PaginaDenuncia() {
           background: #e5e5e5;
           border-radius: 10px;
           overflow: hidden;
-          margin-bottom: 19px;
+          margin-bottom: 1.25rem;
         }
 
         .progresso-atual {
@@ -129,10 +130,11 @@ export default function PaginaDenuncia() {
 
         .denuncia label {
           display: block;
-          margin-top: 15px;
-          margin-bottom: 5px;
-          font-size: 8px;
+          margin-top: 1.15rem;
+          margin-bottom: 0.4rem;
+          font-size: 0.75rem;
           font-weight: 500;
+          letter-spacing: 0.02em;
           color: #777;
         }
 
@@ -140,35 +142,35 @@ export default function PaginaDenuncia() {
 
         .campo-localizacao {
           width: 100%;
-          height: 34px;
+          min-height: 2.75rem;
           border: 1px solid #d7dcdc;
-          border-radius: 5px;
+          border-radius: 8px;
 
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 0.5rem;
 
-          padding: 0 9px;
+          padding: 0 0.85rem;
 
-          font-size: 9px;
+          font-size: 0.9375rem;
           color: #555;
           background: #fff;
         }
 
         .icone-localizacao {
           color: #075c3d;
-          font-size: 17px;
+          font-size: 1.25rem;
           line-height: 1;
         }
 
         /* Foto */
 
         .botao-foto {
-          width: 87px;
-          height: 67px;
+          width: 7.5rem;
+          height: 5.5rem;
 
           border: 1px dashed #cbd3d0;
-          border-radius: 7px;
+          border-radius: 10px;
 
           background: #fff;
           color: #555;
@@ -178,21 +180,21 @@ export default function PaginaDenuncia() {
           justify-content: center;
           align-items: center;
 
-          gap: 7px;
+          gap: 0.4rem;
 
-          font-size: 9px;
+          font-size: 0.8125rem;
           cursor: pointer;
         }
 
         .icone-camera {
-          font-size: 18px;
+          font-size: 1.5rem;
           line-height: 1;
         }
 
         .denuncia small {
           display: block;
-          margin-top: 4px;
-          font-size: 6px;
+          margin-top: 0.4rem;
+          font-size: 0.75rem;
           color: #888;
         }
 
@@ -200,18 +202,18 @@ export default function PaginaDenuncia() {
 
         .denuncia textarea {
           width: 100%;
-          height: 52px;
+          min-height: 6.5rem;
 
           border: 1px solid #d7dcdc;
-          border-radius: 5px;
+          border-radius: 8px;
 
-          padding: 9px;
+          padding: 0.75rem 0.85rem;
 
-          resize: none;
+          resize: vertical;
           outline: none;
 
-          font-family: Arial, Helvetica, sans-serif;
-          font-size: 9px;
+          font-family: inherit;
+          font-size: 0.9375rem;
           color: #333;
           background: #fff;
         }
@@ -228,12 +230,12 @@ export default function PaginaDenuncia() {
 
         .botao-enviar {
           width: 100%;
-          height: 31px;
+          min-height: 2.875rem;
 
-          margin-top: 25px;
+          margin-top: 1.75rem;
 
           border: none;
-          border-radius: 20px;
+          border-radius: 999px;
 
           background: #075c3d;
           color: #fff;
@@ -241,9 +243,9 @@ export default function PaginaDenuncia() {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 5px;
+          gap: 0.4rem;
 
-          font-size: 9px;
+          font-size: 0.9375rem;
           font-weight: 600;
 
           cursor: pointer;
@@ -252,21 +254,57 @@ export default function PaginaDenuncia() {
         }
 
         .botao-enviar span {
-          font-size: 12px;
+          font-size: 1rem;
         }
 
-        /* Desktop */
+        /* Tablet / desktop: coluna mais larga e tipografia um pouco maior */
 
-        @media (min-width: 600px) {
+        @media (min-width: 640px) {
           .denuncia {
-            padding: 30px 0;
+            padding: 2rem 1.5rem;
+            align-items: flex-start;
           }
 
           .denuncia-container {
+            max-width: 36rem;
             min-height: auto;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
-            
+            padding: 2rem 2rem 2.25rem;
+          }
+
+          .denuncia h1 {
+            font-size: 1.6rem;
+          }
+
+          .subtitulo {
+            font-size: 1rem;
+          }
+
+          .denuncia label {
+            font-size: 0.8125rem;
+          }
+
+          .campo-localizacao,
+          .denuncia textarea {
+            font-size: 1rem;
+          }
+
+          .botao-foto {
+            width: 8.5rem;
+            height: 6rem;
+            font-size: 0.875rem;
+          }
+
+          .botao-enviar {
+            min-height: 3rem;
+            font-size: 1rem;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .denuncia-container {
+            max-width: 40rem;
           }
         }
       `}</style>
