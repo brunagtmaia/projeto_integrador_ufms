@@ -1,4 +1,4 @@
-# Estrutura do projeto
+## Estrutura do projeto
 
 Este arquivo lista **pastas e arquivos** da raiz do repositório e explica **para que servem**.
 
@@ -6,7 +6,7 @@ Regra de ouro: se você não sabe o que um arquivo faz, **não apague**. Leia es
 
 ## Visão da árvore (o que importa)
 
-```text
+```plaintext
 projeto_integrador_ufms/
 ├── app/                      ← páginas e (depois) APIs — o coração do site
 │   ├── page.js               ← Home (/)
@@ -36,12 +36,10 @@ projeto_integrador_ufms/
 
 Arquivos gerados automaticamente (não editar, não commitar):
 
-- `node_modules/` — bibliotecas baixadas pelo `npm install`
-- `.next/` — cache do Next.js quando você roda `npm run dev`
-- `.env` — **sua** senha; só na sua máquina
-- `prisma/dev.db` — banco local (quando existir de verdade)
-
----
+*   `node_modules/` — bibliotecas baixadas pelo `npm install`
+*   `.next/` — cache do Next.js quando você roda `npm run dev`
+*   `.env` — **sua** senha; só na sua máquina
+*   `prisma/dev.db` — banco local (quando existir de verdade)
 
 ## Raiz do projeto (arquivos soltos)
 
@@ -49,9 +47,9 @@ Arquivos gerados automaticamente (não editar, não commitar):
 
 Lista:
 
-- o **nome** do projeto;
-- os **comandos** (`npm run dev`, `npm run build`, `npm run lint`);
-- as **dependências** (Next.js, React, Tailwind).
+*   o **nome** do projeto;
+*   os **comandos** (`npm run dev`, `npm run build`, `npm run lint`);
+*   as **dependências** (Next.js, React, Tailwind).
 
 O que cada biblioteca faz (Next, React, Tailwind, ESLint, o que ainda falta no MVP): [07-bibliotecas.md](./07-bibliotecas.md).
 
@@ -89,7 +87,7 @@ Lista do que **não** sobe para o GitHub: `node_modules`, `.next`, `.env`, banco
 
 Modelo:
 
-```text
+```plaintext
 DATABASE_URL="file:./dev.db"
 ADMIN_PASSWORD="troque-esta-senha"
 ```
@@ -99,12 +97,6 @@ Copie para `.env` na **sua** máquina (`cp .env.example .env`) e troque a senha.
 ### `.env`
 
 Arquivo local (não está no Git). Guarda a senha da tela da prefeitura e o caminho do banco. **Nunca** cole no WhatsApp do grupo público nem no commit.
-
-### `AGENTS.md` e `CLAUDE.md`
-
-Arquivos gerados/atualizados pelo Next.js para ferramentas de IA. **Não são** o trabalho da disciplina. Não precisa ler para desenvolver as telas.
-
----
 
 ## Pasta `app/` — o site
 
@@ -129,8 +121,6 @@ Reservada para o **backend** no mesmo projeto. Pastas `denuncias/` e `geocode/` 
 
 Não coloque tela de usuário aqui: API não é página com botão.
 
----
-
 ## Pasta `components/`
 
 Pedaços de interface **reutilizáveis**. A maioria é importada por um `page.js`. O `MenuLateral.js` é importado pelo `app/layout.js`, por isso aparece em **todas** as telas.
@@ -138,14 +128,12 @@ Pedaços de interface **reutilizáveis**. A maioria é importada por um `page.js
 | Arquivo | Para quê |
 | --- | --- |
 | `PlaceholderTela.js` | Título, descrição, “Voltar à Home” e aviso de tela incompleta. Usado em `/denuncia`, `/acompanhar` e `/prefeitura` (não mais em `/mapa`). |
-| `Icone.js` | Desenha um ícone **Material Icons Outlined** (ex.: `<Icone nome="home" />`). Nomes em inglês: [fonts.google.com/icons](https://fonts.google.com/icons) (estilo Outlined). |
+| `Icone.js` | Desenha um ícone **Material Icons Outlined** (ex.: `<icone nome="home">`). Nomes em inglês: [fonts.google.com/icons](https://fonts.google.com/icons) (estilo Outlined). |
 | `MenuLateral.js` | Menu **lateral** (abre/fecha). |
 | `mapa/TelaMapa.js` | Lista, filtro, botão Centralizar e carrega o mapa (só no navegador). |
 | `mapa/MapaLeaflet.js` | Leaflet + OpenStreetMap + marcadores + enquadrar pontos. |
 
 Quando o formulário de denúncia estiver pronto, essa página **para de usar** o placeholder. O arquivo pode ficar para outras telas incompletas ou ser apagado se ninguém mais precisar.
-
----
 
 ## Pasta `docs/`
 
@@ -161,8 +149,6 @@ Documentação do trabalho (este guia). Veja o índice em [README.md](./README.m
 | `chats/` | Pasta vazia (anotações futuras) |
 | `checkouts-ufms/` | Pasta vazia (anotações futuras) |
 
----
-
 ## Pasta `public/`
 
 Tudo aqui é servido **como arquivo estático**. Exemplo: `public/next.svg` aparece em `/next.svg`.
@@ -175,8 +161,6 @@ Tudo aqui é servido **como arquivo estático**. Exemplo: `public/next.svg` apar
 
 **Não** envie fotos reais para o GitHub. O `.gitignore` já bloqueia o conteúdo de `uploads/`.
 
----
-
 ## Pasta `lib/`
 
 Funções e dados que **não são tela**.
@@ -184,8 +168,6 @@ Funções e dados que **não são tela**.
 | Arquivo | Para quê |
 | --- | --- |
 | `denuncias-exemplo.js` | Lista falsa de denúncias (endereço, status, lat/lng) para a tela `/mapa` até existir o Prisma. |
-
----
 
 ## Pasta `prisma/`
 
@@ -196,16 +178,4 @@ No MVP o banco é **SQLite + Prisma**. Hoje a pasta tem:
 | `dev.db` | Arquivo de banco local (não vai para o Git). Pode existir na sua máquina sem o `schema.prisma` ainda. |
 | `migrations/` | Histórico de mudanças do banco. Pasta iniciada; o modelo completo entra quando o grupo configurar o Prisma de verdade. |
 
-Ainda **falta** o arquivo `prisma/schema.prisma` (o “desenho” das tabelas). Sem ele, o Prisma não está de fato no fluxo do dia a dia. Quem for fazer o passo 2 do MVP (gravar denúncia) deve seguir [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md) e o [mpv.md](./mpv.md).
-
----
-
-## O que você **não** deve commitar
-
-- `node_modules/`
-- `.next/`
-- `.env` (senhas)
-- `prisma/dev.db`
-- fotos em `public/uploads/` (exceto o `.gitkeep`)
-
-Se o `git status` mostrar esses arquivos, **não** dê `git add` neles. Avise o grupo: o `.gitignore` deveria estar cobrindo.
+Ainda **falta** o arquivo `prisma/schema.prisma` (o “desenho” das tabelas). Sem ele, o Prisma não está de fato no fluxo do dia a dia. Quem for fazer o passo 2 do MVP (gravar denúncia) deve seguir [arquitetura\_e\_tecnologias.md](./arquitetura_e_tecnologias.md) e o [mpv.md](./mpv.md).
