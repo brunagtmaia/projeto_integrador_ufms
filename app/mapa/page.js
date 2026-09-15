@@ -7,6 +7,9 @@
 // Este arquivo é um Server Component (não tem "use client"): só define o
 // título da aba e chama TelaMapa, que é a parte interativa (mapa + lista).
 //
+// Check-out 3 · passo 11: TelaMapa busca a lista em GET /api/denuncias
+// (não usa mais o mock DENUNCIAS_EXEMPLO).
+//
 // O menu hambúrguer NÃO é desenhado aqui. Ele está no layout raiz.
 // =============================================================================
 

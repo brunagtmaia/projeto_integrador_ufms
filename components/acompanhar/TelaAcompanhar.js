@@ -1,26 +1,27 @@
 "use client";
 
 // =============================================================================
-// TELA /acompanhar — consulta o status só pelo número do protocolo (mock)
+// TELA /acompanhar — consulta o status só pelo número do protocolo (API real)
 // =============================================================================
-// Estados previstos no guia docs/10-checkout2-frontend-telas.md:
-//   vazio → carregando → encontrado OU não encontrado
+// Check-out 3 · passo 10:
+//   Antes (check-out 2): buscava em lib/denuncias-exemplo.js (mock).
+//   Agora: chama GET /api/denuncias?protocolo=... (banco SQLite via Prisma).
 //
-// Dados: lib/denuncias-exemplo.js (sem banco ainda).
-// Se a URL vier com ?protocolo=748393 (ex.: vindo do sucesso), o campo
-// já começa preenchido — a pessoa só clica em Buscar.
+// Estados da UI (iguais ao guia do check-out 2):
+//   vazio → carregando → encontrado | não encontrado | erro de rede
 //
-// "use client" porque usamos useState + useSearchParams + clique.
+// Se a URL vier com ?protocolo=482913 (ex.: vindo da tela de sucesso),
+// o campo já começa preenchido — a pessoa só clica em Buscar.
+//
+// "use client" porque usamos useState + useSearchParams + clique + fetch.
+// Guia: docs/11-checkout3-banco-backend.md
 // =============================================================================
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Icone from "../Icone";
-import { buscarDenunciaPorProtocolo } from "../../lib/denuncias-exemplo";
-
-// Tempo curto só para a UI de “Buscando…” aparecer (não é API de verdade).
-const ATRASO_MOCK_MS = 500;
+import CarrosselFotos from "../CarrosselFotos";
 
 export default function TelaAcompanhar() {
   const busca = useSearchParams();
@@ -29,11 +30,15 @@ export default function TelaAcompanhar() {
   // O que a pessoa digita no campo.
   const [protocolo, setProtocolo] = useState(protocoloNaUrl);
 
-  // null = ainda não buscou | "carregando" | "encontrado" | "nao_encontrado"
+  // null = ainda não buscou
+  // "carregando" | "encontrado" | "nao_encontrado" | "erro"
   const [estado, setEstado] = useState(null);
 
-  // Denúncia achada no mock (só quando estado === "encontrado").
+  // Denúncia achada na API (só quando estado === "encontrado").
   const [denuncia, setDenuncia] = useState(null);
+
+  // Mensagem amigável quando a rede / o servidor falha (estado === "erro").
+  const [mensagemErro, setMensagemErro] = useState("");
 
   // Se a URL mudar (ex.: veio do sucesso com outro protocolo), atualiza o campo.
   useEffect(() => {
@@ -42,7 +47,11 @@ export default function TelaAcompanhar() {
     }
   }, [protocoloNaUrl]);
 
-  function buscar(evento) {
+  /**
+   * Chama a API de verdade (passo 07 do check-out 3).
+   * async = podemos usar await no fetch sem “travar” a tela.
+   */
+  async function buscar(evento) {
     // Evita o formulário recarregar a página.
     evento.preventDefault();
 
@@ -50,23 +59,56 @@ export default function TelaAcompanhar() {
     if (!limpo) {
       setEstado(null);
       setDenuncia(null);
+      setMensagemErro("");
       return;
     }
 
     setEstado("carregando");
     setDenuncia(null);
+    setMensagemErro("");
 
-    // Simula “espera da API”. No check-out 3 vira fetch de verdade.
-    setTimeout(() => {
-      const achada = buscarDenunciaPorProtocolo(limpo);
-      if (achada) {
-        setDenuncia(achada);
-        setEstado("encontrado");
-      } else {
+    try {
+      // encodeURIComponent protege caracteres especiais na URL.
+      const resposta = await fetch(
+        `/api/denuncias?protocolo=${encodeURIComponent(limpo)}`,
+      );
+
+      // A API devolve JSON em sucesso e em erro (campo "erro" em português).
+      let dados = null;
+      try {
+        dados = await resposta.json();
+      } catch {
+        dados = null;
+      }
+
+      // 404 = protocolo não existe neste banco (dev.db desta máquina).
+      if (resposta.status === 404) {
         setDenuncia(null);
         setEstado("nao_encontrado");
+        return;
       }
-    }, ATRASO_MOCK_MS);
+
+      if (!resposta.ok || !dados?.ok || !dados?.denuncia) {
+        setDenuncia(null);
+        setMensagemErro(
+          dados?.erro ||
+            "Não foi possível consultar o protocolo. Tente de novo.",
+        );
+        setEstado("erro");
+        return;
+      }
+
+      // Sucesso: mesmos campos do mock (id, endereco, descricao, status…).
+      setDenuncia(dados.denuncia);
+      setEstado("encontrado");
+    } catch {
+      // fetch falhou (servidor parado, sem rede, etc.).
+      setDenuncia(null);
+      setMensagemErro(
+        "Falha de rede ao buscar. Tente novamente em instantes.",
+      );
+      setEstado("erro");
+    }
   }
 
   const statusPendente = denuncia?.status === "PENDENTE";
@@ -96,7 +138,7 @@ export default function TelaAcompanhar() {
             type="text"
             inputMode="numeric"
             autoComplete="off"
-            placeholder="Ex.: 748393"
+            placeholder="Ex.: 482913"
             value={protocolo}
             onChange={(e) => setProtocolo(e.target.value)}
             className="w-full rounded-[var(--raio)] border border-[var(--neutral-borda)] bg-white px-4 py-3 text-base text-secondary outline-none focus:border-primary"
@@ -150,6 +192,23 @@ export default function TelaAcompanhar() {
               <p className="body-text">{denuncia.descricao}</p>
             </div>
 
+            {/* Foto(s): a API devolve `foto` (principal) e `fotos` (lista). */}
+            {(denuncia.fotos?.length > 0 || denuncia.foto) ? (
+              <div>
+                <p className="label-text mb-2">
+                  {denuncia.fotos?.length > 1 ? "Fotos" : "Foto"}
+                </p>
+                <CarrosselFotos
+                  fotos={
+                    denuncia.fotos?.length
+                      ? denuncia.fotos
+                      : [denuncia.foto]
+                  }
+                  altBase={`Denúncia ${denuncia.id}`}
+                />
+              </div>
+            ) : null}
+
             <Link
               href="/mapa"
               className="btn-contorno w-full !justify-start px-5 py-3"
@@ -160,7 +219,7 @@ export default function TelaAcompanhar() {
           </section>
         ) : null}
 
-        {/* Estado: não encontrado */}
+        {/* Estado: não encontrado (404 da API) */}
         {estado === "nao_encontrado" ? (
           <section
             className="cartao border-dashed px-5 py-6 text-center"
@@ -173,16 +232,28 @@ export default function TelaAcompanhar() {
               Não achamos esse protocolo
             </h2>
             <p className="body-text mt-2">
-              Confira se digitou certo. No check-out 2 só existem os números de
-              exemplo (ex.: 748393, 748401, 748410).
+              Confira se digitou o número corretamente. Se acabou de registrar
+              uma denúncia, use o protocolo mostrado na tela de sucesso.
             </p>
           </section>
         ) : null}
 
-        <p className="body-text text-center text-sm opacity-80">
-          Check-out 2: a busca usa a lista de exemplo. No check-out 3 virá da
-          API/banco.
-        </p>
+        {/* Estado: erro de rede / servidor */}
+        {estado === "erro" ? (
+          <section
+            className="cartao border-dashed px-5 py-6 text-center"
+            role="alert"
+          >
+            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-900">
+              <Icone nome="wifi_off" className="!text-3xl" />
+            </span>
+            <h2 className="text-lg font-semibold text-secondary">
+              Não foi possível consultar
+            </h2>
+            <p className="body-text mt-2">{mensagemErro}</p>
+          </section>
+        ) : null}
+
       </main>
     </div>
   );

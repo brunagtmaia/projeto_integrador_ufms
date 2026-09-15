@@ -34,9 +34,12 @@ O que cada item da stack **é** (e o que já está instalado hoje): [07-bibliote
 
 ## Ordem de implementação
 
-1.  Home + navegação
-2.  Formulário denúncia → grava no SQLite → mostra protocolo
-3.  Consulta por protocolo
-4.  Mapa com os registros
-5.  Marcar resolvido
-6.  Ajustar CSS no celular
+1.  Home + navegação ← feito (check-out 2)
+2.  Formulário denúncia → grava no SQLite → mostra protocolo ← feito (check-out 3)
+3.  Consulta por protocolo ← feito (check-out 3)
+4.  Mapa com os registros ← feito (check-out 3)
+5.  Marcar resolvido ← feito (check-out 3)
+6.  Ajustar CSS no celular ← feito (check-out 2)
+
+Guia do banco/backend (iniciantes): [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).  
+Roteiro ponta a ponta: seção do **passo 13** nesse guia.

@@ -29,16 +29,27 @@ Quando aparecer uma palavra estranha no código ou nas reuniões, volte nesta li
 | **`import`** | Traz código de outro arquivo. |
 | **Tailwind** | Classes de estilo no `className` (`flex`, `text-2xl`, `bg-white`). |
 | **CSS** | Folha de estilo. Neste projeto o global é `app/globals.css`. |
-| **API** | Endereço que **grava ou busca dados**, não uma tela bonita. Ex.: `/api/denuncias`. |
+| **API** | Endereço que **grava ou busca dados**, não uma tela bonita. Ex.: `/api/denuncias`. Hoje: `POST` cria, `GET` lista/busca e `PATCH .../resolver` marca resolvido. As telas `/denuncia`, `/acompanhar`, `/mapa` e `/prefeitura` já chamam essas rotas (passos 09–12). |
+| **FormData** | Jeito de mandar **texto + arquivo(s)** (foto) na mesma requisição. Usado no formulário de denúncia e no `POST /api/denuncias`. O campo `foto` pode se repetir (até 5 imagens). |
+| **Carrossel de fotos** | Na tela `/denuncia`: pré-visualização das imagens, setas para navegar, botão **X** para excluir e botão para **adicionar outra**. Detalhes no guia do check-out 3 (passo 09). |
+| **GET / POST / PATCH** | Métodos HTTP. **GET** = “me mostre”. **POST** = “crie”. **PATCH** = “mude só uma parte” (ex.: status → `RESOLVIDO`). |
+| **Query string** | Texto depois do `?` na URL. Ex.: `/api/denuncias?protocolo=125172` — o parâmetro é `protocolo`. |
 | **SQLite** | Banco em **um arquivo** (`dev.db`). Não precisa instalar MySQL. |
-| **Prisma** | Ferramenta que cria/atualiza o SQLite a partir de um modelo. Ainda entra no próximo passo. |
-| **`.env`** | Segredos da **sua** máquina (senha da prefeitura). **Nunca** vá para o GitHub. |
+| **Prisma** | Ferramenta que cria/atualiza o SQLite a partir de um modelo (`schema.prisma`). **Já instalada** no check-out 3. Guia: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md). |
+| **`schema.prisma`** | Arquivo na pasta `prisma/` com o “desenho” das tabelas. |
+| **`model Denuncia`** | Bloco no schema que lista os campos de uma denúncia (protocolo, endereço, status, GPS, foto…). **Já existe** (passo 03). |
+| **Migração** | Comando (`npm run db:migrate`) que aplica o schema no arquivo `dev.db`. **Já existe** a migração `init_denuncia` no Git (passo 04); cada pessoa aplica na própria máquina. |
+| **`PrismaClient` / `lib/prisma.js`** | Objeto (e o arquivo que o exporta) usado no **servidor** para gravar/buscar denúncias. **Já existe** (passo 05). Não use isso dentro de componente só do navegador. |
+| **Protocolo** | Número (texto de 6 dígitos) que identifica a denúncia. Gerado por `lib/gerar-protocolo.js` (passo 05) quando a API criar o registro. |
+| **`.env`** | Segredos da **sua** máquina (`DATABASE_URL`, `ADMIN_PASSWORD` da prefeitura). **Nunca** vá para o GitHub. A API do passo 08 compara a senha; a tela `/prefeitura` (passo 12) só **envia** o que a pessoa digitou. |
 | **`.env.example`** | Modelo **sem senha real**. Esse pode ir para o GitHub. |
 | **`localhost:3000`** | “Este computador, porta 3000” — o site em desenvolvimento. |
 | **`npm run dev`** | Liga o servidor de desenvolvimento. Deixe o terminal aberto. |
 | **Placeholder** | Tela temporária (“ainda não implementada”) só para a rota existir. |
 | **MVP** | Produto mínimo viável — só o essencial. |
 | **Leaflet / OSM** | Leaflet desenha o mapa; OpenStreetMap fornece as ruas (grátis). Já usado em `/mapa`. |
+| **Nominatim** | Serviço grátis do OpenStreetMap que transforma endereço ↔ GPS. O app usa via `/api/geocode` (formulário `/denuncia`). |
+| **Geocode / autocomplete** | Buscar sugestões de endereço enquanto a pessoa digita; ao escolher, o formulário guarda `lat`/`lng` sem mostrar os números. |
 | **Deploy / Vercel** | Colocar o site na internet. Combinamos Vercel no MVP. |
 | **`public/`** | Arquivos que o navegador baixa direto (ícones, fotos em `uploads/`). |
 

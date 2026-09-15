@@ -1,6 +1,6 @@
 # Bibliotecas do projeto
 
-Este texto lista **tudo que o site usa** (e o que o MVP ainda vai usar) e explica **para que serve**, em linguagem de quem está começando.
+Este texto lista **tudo que o site usa** e explica **para que serve**, em linguagem de quem está começando.
 
 **Biblioteca** = um pedaço de código que outra pessoa já escreveu. Em vez de inventar “como desenhar um botão no navegador”, usamos React, Next.js, etc.
 
@@ -8,9 +8,9 @@ A lista oficial de nomes e versões fica no arquivo `package.json` na raiz. O co
 
 Há três grupos:
 
-1. **Já instaladas** — estão no `package.json` hoje (incluindo Leaflet para o mapa).
+1. **Já instaladas** — estão no `package.json` hoje (incluindo Leaflet e **Prisma**).
 2. **Não são npm, mas o site usa** — fonte, ícones e os tiles do OpenStreetMap.
-3. **Combinadas no MVP, ainda não instaladas** — banco (Prisma + SQLite).
+3. **Ferramentas do computador** — Node, npm, Git (não são pacotes do projeto).
 
 ---
 
@@ -22,17 +22,18 @@ São as bibliotecas que o site **precisa para funcionar** (na sua máquina e, de
 
 | Nome no `package.json` | Versão no projeto | Para que serve |
 | --- | --- | --- |
-| **next** | 16.3.1 | **Next.js.** Monta o site: páginas na pasta `app/`, endereços (`/mapa`), e depois as APIs (`/api/...`). O comando `npm run dev` é o Next.js. Sem ele não existe o projeto como está. |
+| **next** | 16.3.1 | **Next.js.** Monta o site: páginas na pasta `app/`, endereços (`/mapa`), e as APIs (`/api/...`). O comando `npm run dev` é o Next.js. Sem ele não existe o projeto como está. |
 | **react** | 19.2.8 | **React.** Permite escrever a tela em **componentes** (funções que devolvem JSX, tipo `Home` ou `Icone`). O Next.js **usa** o React por baixo. |
 | **react-dom** | 19.2.8 | Liga o React ao **navegador** (coloca o HTML na página). Quase sempre vem junto com o React; não mexemos nela no dia a dia. |
 | **leaflet** | 1.9.x | Desenha o **mapa** e os marcadores na tela `/mapa`. |
 | **react-leaflet** | 5.x | Deixa usar o Leaflet com componentes React (`MapContainer`, `Marker`). |
+| **@prisma/client** | 6.x | **Cliente do Prisma.** É o que o código das APIs importa para gravar/buscar denúncias no SQLite (ex.: `prisma.denuncia.create`). Depois de mudar o `schema.prisma`, rode `npm run db:generate` (ou `db:migrate`, que já gera). |
 
 Por que Next **e** React? O React desenha os pedaços da tela. O Next.js organiza pastas, rotas, servidor e o comando de desenvolvimento.
 
 ### Dependências de desenvolvimento (`devDependencies`)
 
-Servem **enquanto programamos**. Não são “a tela da denúncia”; ajudam a estilizar e a achar erro no código.
+Servem **enquanto programamos**. Não são “a tela da denúncia”; ajudam a estilizar, achar erro e cuidar do banco.
 
 | Nome no `package.json` | Para que serve |
 | --- | --- |
@@ -40,6 +41,7 @@ Servem **enquanto programamos**. Não são “a tela da denúncia”; ajudam a e
 | **@tailwindcss/postcss** | “Cola” o Tailwind no processo de CSS do projeto. Sem isso, as classes do Tailwind não viram estilo de verdade. Em geral **não se edita**. |
 | **eslint** | Programa que **lê o código** e avisa coisa estranha (variável não usada, erro de sintaxe). Roda com `npm run lint`. |
 | **eslint-config-next** | Conjunto de regras do ESLint **feitas para Next.js**. Assim o lint entende `page.js`, `layout.js`, etc. |
+| **prisma** | **CLI do Prisma** (linha de comando). Cria/atualiza o banco a partir do arquivo `prisma/schema.prisma`. Comandos do grupo: `npm run db:migrate`, `npm run db:studio`, `npm run db:generate`. |
 
 **PostCSS** aparece no arquivo `postcss.config.mjs`. Não está listado à parte no `package.json` porque entra junto com o plugin do Tailwind. Função: transformar o CSS (incluindo `@import "tailwindcss"`) no CSS que o navegador entende.
 
@@ -54,6 +56,7 @@ Essas coisas vêm da **internet** quando a página abre (ou o Next baixa a fonte
 | **Poppins** | `next/font/google` em `app/layout.js` | Fonte do app (o guia visual mostrava Inter; o grupo pediu **Poppins**). |
 | **Material Icons Outlined** | `<link>` no `app/layout.js` + componente `components/Icone.js` | Ícones do **Material Design**. Catálogo: [fonts.google.com/icons](https://fonts.google.com/icons). |
 | **OpenStreetMap (tiles)** | URL no `MapaLeaflet.js` | Imagens das ruas, **gratuitas**, sem chave. O Leaflet só “cola” esses quadradinhos. |
+| **Nominatim (geocode)** | Chamado por `app/api/geocode/route.js` | Transforma endereço ↔ GPS (autocomplete e reverse). Grátis; não precisa chave no `.env`. |
 
 ---
 
@@ -65,23 +68,27 @@ Essas coisas vêm da **internet** quando a página abre (ou o Next baixa a fonte
 | **npm** | Não. Vem com o Node. | Lê o `package.json` e instala as bibliotecas. |
 | **Git** | Não. | Histórico do código e GitHub. |
 | **JavaScript** | Linguagem, não pacote. | Tudo que escrevemos em `.js`. |
-| **SQLite** | Motor de banco (arquivo `dev.db`). | Guardar denúncias. No MVP entra **junto com o Prisma**. Hoje o Prisma ainda não está no `package.json`. |
+| **SQLite** | Motor de banco (arquivo `dev.db`). | Guardar denúncias. O Prisma **usa** o SQLite; você não instala MySQL nem PostgreSQL. |
 | **Vercel** | Serviço na nuvem. | Colocar o site no ar (combinado no MVP). Não é um pacote que se importa no código. |
 
 ---
 
-## 4. Combinadas no MVP, **ainda não** estão no `package.json`
+## 4. Banco de dados no MVP (Prisma + SQLite)
 
-O [mpv.md](./mpv.md) pediu estas camadas. Elas **entram nos próximos passos**. Quando alguém instalar, este arquivo deve ser atualizado.
+No **check-out 3** o grupo grava denúncias de verdade. Resumo em linguagem simples:
 
-| Nome | Para que serve | Quando usar |
+| Peça | O que é | Onde fica |
 | --- | --- | --- |
-| **Prisma** (`prisma` + em geral `@prisma/client`) | Desenha as tabelas (`schema.prisma`) e conversa com o banco sem escrever SQL na mão. | Passo de **gravar denúncia** e consultar protocolo. |
-| **SQLite** | Banco em **um arquivo** (`prisma/dev.db`). Não instala MySQL. | Junto com o Prisma. |
+| **SQLite** | Banco em **um arquivo** no disco | `prisma/dev.db` (não vai para o GitHub) |
+| **Prisma** | Ferramenta que lê o “desenho” das tabelas e conversa com o SQLite **sem** você escrever SQL na mão | CLI (`prisma`) + cliente (`@prisma/client`) |
+| **`schema.prisma`** | Arquivo de texto com o desenho do banco | `prisma/schema.prisma` |
+| **Migração** | Comando que aplica o desenho no arquivo `.db` | `npm run db:migrate` |
 
-O **mapa** (Leaflet + OpenStreetMap) já está na tela `/mapa`, ainda com dados de exemplo em `lib/denuncias-exemplo.js`.
+**Situação hoje (passos 01–13 do check-out 3):** Prisma **já está instalado**. O `schema.prisma` tem o `model Denuncia`. A migração `init_denuncia` **já está** em `prisma/migrations/`. Cada pessoa roda `npm run db:migrate` para criar o **próprio** `dev.db`. No código já existem `lib/prisma.js`, `lib/gerar-protocolo.js`, a rota **`/api/denuncias`** com **`POST`** (criar + upload) e **`GET`** (listar / buscar), **`PATCH /api/denuncias/[id]/resolver`**, e as telas **`/denuncia`**, **`/acompanhar`**, **`/mapa`** e **`/prefeitura`** ligadas ao banco. O **teste ponta a ponta** (passo 13) está no guia. Guia: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
 
-**Não instalar agora** (trabalhos futuros): PostGIS, bibliotecas de login/e-mail, PWA.
+O **mapa** (Leaflet + OpenStreetMap) já está na tela `/mapa` e, no passo 11, a lista de pontos vem de `GET /api/denuncias` (não mais do mock).
+
+**Não instalar agora** (trabalhos futuros): PostGIS, bibliotecas de login/e-mail, PWA. Ver [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
 
 ---
 
@@ -97,6 +104,12 @@ Se o `package.json` mudar no GitHub, cada pessoa roda de novo:
 npm install
 ```
 
+Se alguém mudou o `schema.prisma` e você puxou o código, rode também:
+
+```bash
+npm run db:migrate
+```
+
 ---
 
 ## Relação rápida (quem usa o quê)
@@ -107,10 +120,15 @@ Você escreve JSX  →  React desenha os componentes
                      Tailwind / globals.css pintam botões e cartões
                      Poppins + Material Icons = identidade visual
                      Menu lateral (abre/fecha) em todas as páginas
-Próximos passos   →  Prisma + SQLite gravam denúncia
-                     (o mapa já usa Leaflet + OpenStreetMap com dados de exemplo)
+                     Leaflet + OpenStreetMap = mapa
+                     Nominatim via /api/geocode = endereço ↔ GPS no formulário
+Banco (check-out 3) → Prisma + SQLite gravam e leem denúncias
+                     schema.prisma = desenho; lib/prisma.js = conexão
+                     lib/gerar-protocolo.js = protocolo único
+                     APIs em app/api/ = porta de entrada (POST/GET denúncias; PATCH resolver; geocode)
 ```
 
 Mais detalhes de pastas: [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md).  
 Visual e menu: [08-identidade-e-menu.md](./08-identidade-e-menu.md).  
-Como ligar o projeto: [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md).
+Como ligar o projeto: [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md).  
+Check-out 3 (banco + backend): [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).

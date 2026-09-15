@@ -116,11 +116,6 @@ export default function TelaSucessoDenuncia() {
             Nova denúncia
           </Link>
         </nav>
-
-        <p className="body-text text-center text-sm opacity-80">
-          Check-out 2: o protocolo ainda é simulado (vem da lista de exemplo).
-          No check-out 3 ele será gravado no banco.
-        </p>
       </main>
     </div>
   );

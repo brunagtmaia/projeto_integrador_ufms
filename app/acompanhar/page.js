@@ -6,8 +6,10 @@
 // MVP: acompanhar a denúncia SÓ pelo número do protocolo
 // (sem cadastro, sem "minhas denúncias").
 //
-// A consulta de verdade fica em components/acompanhar/TelaAcompanhar.js
-// (cliente: campo, estados, mock).
+// A consulta fica em components/acompanhar/TelaAcompanhar.js
+// (cliente: campo, estados, fetch para GET /api/denuncias?protocolo=…).
+//
+// Check-out 3 · passo 10: a tela já consulta o banco (não usa mais o mock).
 //
 // Suspense: useSearchParams (pré-preenche ?protocolo=) exige um fallback
 // no App Router — mesmo padrão de /denuncia/sucesso.

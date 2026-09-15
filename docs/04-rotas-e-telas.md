@@ -53,15 +53,16 @@ O `.map` percorre o array e cria um `Link` do Next.js para cada tela. **Para adi
 | Rota | Situação |
 | --- | --- |
 | `/` (Home) | Implementada; no check-out 2 aproxima do mockup FiscalizApp |
-| `/denuncia` | **Layout visual já feito** — não redesenhar; Enviar sorteia `id` do mock → sucesso |
+| `/denuncia` | **Passo 09:** formulário real → `POST /api/denuncias` → sucesso com protocolo do banco (visual do check-out 2 mantido) |
 | `/denuncia/sucesso` | **Feita** — mostra o protocolo (`?protocolo=`), copiar e links |
-| `/acompanhar` | **Feita** — consulta por protocolo (mock); estados vazio / carregando / encontrado / não encontrado |
-| `/mapa` | Já implementada (`components/mapa/`): mapa + lista + Centralizar |
-| `/prefeitura` | **Feita** — senha de teste `prefeitura` + lista de pendentes + marcar resolvido (só na memória) |
+| `/acompanhar` | **Passo 10:** consulta por protocolo no **banco** (`GET ?protocolo=`); estados vazio / carregando / encontrado / não encontrado / erro |
+| `/mapa` | **Passo 11:** mapa + lista + Centralizar — pontos do **banco** (`GET /api/denuncias`) |
+| `/prefeitura` | **Passo 12:** senha do `.env` (`ADMIN_PASSWORD`) + lista do banco + marcar resolvido com `PATCH` |
 
-Acompanhar, sucesso e prefeitura já estão feitos no check-out 2 (front/mock).
+`/denuncia`, `/acompanhar`, `/mapa` e `/prefeitura` já usam a API do check-out 3.
 
-Detalhes, fluxos e checklist: [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md).
+Detalhes do front (check-out 2): [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md).  
+Backend, passos 09–12 e **teste ponta a ponta (passo 13):** [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
 
 ## Por que `Link` e não `<a>`?
 
@@ -82,4 +83,6 @@ Isso está em [06-trabalhos-futuros.md](./06-trabalhos-futuros.md) e no [mpv.md]
 2. Abra [http://localhost:3000](http://localhost:3000)
 3. No canto superior esquerdo, clique no ícone de menu (três linhas) para **abrir** o menu lateral. O X, o fundo escuro ou a tecla Esc **fecham**.
 4. Clique em cada item do menu. A URL na barra deve mudar (`/denuncia`, `/mapa`, …).
-5. Em `/prefeitura`, use a senha `prefeitura`, marque um item como resolvido e confira que ele some da lista. Em `/mapa`, teste o mapa, o filtro e o botão **Centralizar**. Roteiro completo: [guia do check-out 2](./10-checkout2-frontend-telas.md#11-como-testar-passo-a-passo).
+5. Em `/prefeitura`, use a senha do seu `.env` (`ADMIN_PASSWORD`), marque um item como resolvido e confira que ele some da lista **e** continua resolvido depois de recarregar. Em `/mapa`, teste o mapa, o filtro e o botão **Centralizar**.  
+   Roteiro **completo** (denunciar → acompanhar → mapa → resolver): [guia do check-out 3 · passo 13](./11-checkout3-banco-backend.md#16-passo-13--teste-ponta-a-ponta--o-que-acabamos-de-fazer).  
+   Roteiro só do front antigo: [guia do check-out 2](./10-checkout2-frontend-telas.md#11-como-testar-passo-a-passo).

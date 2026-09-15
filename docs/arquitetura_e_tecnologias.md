@@ -2,9 +2,10 @@
 
 ## Arquitetura, tecnologias e como configurar o projeto na sua máquina
 
-Hoje o repositório já tem o **Next.js** (JavaScript + App Router + Tailwind), **Poppins**, ícones **Material**, **menu lateral** e a tela **`/mapa`** (Leaflet + OpenStreetMap, dados de exemplo). Banco (Prisma + SQLite) e o formulário de denúncia ainda entram nos próximos passos do MVP.
+Hoje o repositório já tem o **Next.js** (JavaScript + App Router + Tailwind), **Poppins**, ícones **Material**, **menu lateral**, as **telas do MVP**, o **Prisma** com o **model Denuncia**, as **APIs** de denúncia e as telas **`/denuncia`**, **`/acompanhar`**, **`/mapa`** e **`/prefeitura` ligadas ao banco**. O fluxo ponta a ponta (passo 13) está documentado no guia do check-out 3.
 
-**O que cada biblioteca faz:** [07-bibliotecas.md](./07-bibliotecas.md) (instaladas no `package.json`, fontes/ícones e o que ainda falta).
+**O que cada biblioteca faz:** [07-bibliotecas.md](./07-bibliotecas.md).  
+**Guia do banco/backend:** [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
 
 ## O que é este projeto?
 
@@ -121,8 +122,8 @@ DATABASE_URL="file:./dev.db"
 ADMIN_PASSWORD="troque-esta-senha"
 ```
 
-*   `DATABASE_URL` — onde o SQLite vai viver (quando o Prisma estiver no projeto).
-*   `ADMIN_PASSWORD` — senha da tela da prefeitura. **Troque** para algo que só o grupo saiba. Não compartilhe no WhatsApp público nem no GitHub.
+*   `DATABASE_URL` — onde o SQLite vive (arquivo `prisma/dev.db`). O Prisma já está no projeto.
+*   `ADMIN_PASSWORD` — senha da tela da prefeitura. No check-out 3 ela sai do código e fica **só** aqui. Não compartilhe no WhatsApp público nem no GitHub.
 
 O `.env` já está no `.gitignore`: o Git **não** deve enviar esse arquivo.
 
@@ -148,7 +149,7 @@ Para **voltar a trabalhar** no dia seguinte: `cd` na pasta do projeto e de novo 
 
 ```plaintext
 projeto_integrador_ufms/
-├── app/                 # páginas do site (e, depois, app/api/...)
+├── app/                 # páginas do site + APIs (ex.: app/api/denuncias/route.js)
 ├── public/              # arquivos estáticos; fotos em public/uploads/
 ├── docs/                # textos do trabalho (este arquivo, MVP, etc.)
 ├── package.json         # dependências e comandos npm
@@ -157,23 +158,56 @@ projeto_integrador_ufms/
 └── node_modules/        # bibliotecas baixadas (não edite à mão)
 ```
 
-Depois entram, pelo MVP:
+Também fazem parte do MVP:
 
 *   `prisma/` — modelo do banco e o arquivo `dev.db`;
 *   `components/` — pedaços de tela reutilizáveis (menu, mapa);
-*   `lib/` — funções auxiliares (ex.: gerar protocolo).
+*   `lib/` — funções auxiliares: `CENTRO_MAPA` em `denuncias-exemplo.js` (lista mock aposentada), cliente Prisma (`prisma.js`) e gerar protocolo (`gerar-protocolo.js`).
 
-**Arquitetura em uma frase:** o Next.js serve as telas **e** as rotas `/api/...` no mesmo programa. O navegador fala com essas rotas; elas gravam no SQLite e salvam fotos em `public/uploads`.
+**Arquitetura em uma frase:** o Next.js serve as telas **e** as rotas `/api/...` no mesmo programa. O navegador fala com essas rotas; elas usam `lib/prisma.js` para gravar no SQLite e salvam fotos em `public/uploads`.
 
-## Banco de dados (quando o Prisma for adicionado)
+## Banco de dados (Prisma + SQLite)
 
-Ainda não é obrigatório se o Prisma não estiver no `package.json`. Quando o grupo chegar nesse passo, o fluxo típico será:
+O Prisma **já está instalado** (`prisma` + `@prisma/client` no `package.json`).
+
+### Depois de clonar ou puxar mudanças do check-out 3
+
+1. `npm install` (baixa o Prisma junto)
+2. Confira se existe `.env` (copie do `.env.example` se precisar)
+3. Aplique a migração **na sua máquina** (cria/atualiza o `prisma/dev.db` com a tabela `Denuncia`):
 
 ```plaintext
-npx prisma migrate dev
+npm run db:migrate
 ```
 
-Isso cria/atualiza o arquivo `dev.db`. Se o colega mandar um banco novo, cada um roda o migrate **na própria máquina** (o `dev.db` também não vai para o Git).
+O desenho da tabela está em `prisma/schema.prisma`. O histórico compartilhado está em `prisma/migrations/` (já no Git). O arquivo `.db` **não** vai para o Git: cada pessoa gera o próprio.
+
+No código:
+
+* `lib/prisma.js` — conexão com o banco  
+* `lib/gerar-protocolo.js` — número de protocolo único  
+* `app/api/denuncias/route.js` — **`POST`** cria denúncia + upload (passo 06); **`GET`** lista ou busca por `?protocolo=` (passo 07)  
+* `app/api/denuncias/[id]/resolver/route.js` — **`PATCH`** marca `RESOLVIDO` se a senha = `ADMIN_PASSWORD` (passo 08)  
+* `components/denuncia/FormularioDenuncia.js` — tela `/denuncia` chama o `POST` (passo 09)  
+* `components/acompanhar/TelaAcompanhar.js` — tela `/acompanhar` chama o `GET ?protocolo=` (passo 10)  
+* `components/mapa/TelaMapa.js` — tela `/mapa` chama o `GET` lista (passo 11)  
+* `components/prefeitura/TelaPrefeitura.js` — tela `/prefeitura` usa senha do `.env` + `GET` + `PATCH` (passo 12)
+
+Para **ver** a tabela no navegador (depois de um `POST` / `PATCH` de teste, as linhas aparecem aqui):
+
+```plaintext
+npm run db:studio
+```
+
+Outros atalhos:
+
+| Comando | Para quê |
+| --- | --- |
+| `npm run db:studio` | Ver as tabelas no navegador (ótimo para testar) |
+| `npm run db:generate` | Só regenerar o cliente Prisma |
+
+Passo a passo do check-out 3: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) (seções dos passos **04** a **13**).  
+Roteiro ponta a ponta (navegador + `curl`): mesma guia, **passo 13**.
 
 ## Problemas comuns
 
@@ -198,5 +232,6 @@ Isso cria/atualiza o arquivo `dev.db`. Se o colega mandar um banco novo, cada um
 *   Estou na pasta que tem `package.json`
 *   `npm install` terminou sem erro
 *   Existe um `.env` (copiado do `.env.example`)
+*   (Check-out 3) `npm run db:migrate` rodou sem erro (tabela `Denuncia` existe)
 *   `npm run dev` está rodando
 *   [http://localhost:3000](http://localhost:3000) abre no navegador

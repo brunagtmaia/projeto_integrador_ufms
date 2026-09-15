@@ -1,0 +1,94 @@
+// =============================================================================
+// SCHEMA DO PRISMA — “desenho” do banco de dados
+// =============================================================================
+// O que é este arquivo?
+//   É a receita das tabelas. O Prisma lê daqui e cria/atualiza o arquivo
+//   prisma/dev.db (SQLite = banco em um arquivo, sem instalar MySQL).
+//
+// Check-out 3 · passos 03–10:
+//   03 = model Denuncia neste arquivo (o “desenho”).
+//   04 = migração aplicada: a tabela existe no prisma/dev.db.
+//        Pasta: prisma/migrations/…_init_denuncia/
+//   05 = lib/prisma.js (cliente) + lib/gerar-protocolo.js (protocolo único).
+//   06 = POST /api/denuncias — cria denúncia + upload de foto.
+//   07 = GET  /api/denuncias — lista todas OU busca por ?protocolo=
+//   08 = PATCH /api/denuncias/[id]/resolver — marca RESOLVIDO (senha .env)
+//   09 = tela /denuncia (FormularioDenuncia) chama o POST
+//   10 = tela /acompanhar (TelaAcompanhar) chama o GET ?protocolo=
+//
+// Variável DATABASE_URL:
+//   Vem do arquivo .env na raiz do projeto.
+//   Exemplo: DATABASE_URL="file:./dev.db"
+//   O caminho é relativo à pasta prisma/, então o arquivo fica em prisma/dev.db.
+//
+// Se você acabou de clonar / dar git pull nesta branch:
+//   1) npm install
+//   2) cp .env.example .env   (se ainda não tiver .env)
+//   3) npm run db:migrate     ← cria/atualiza o SEU dev.db local
+// O arquivo .db NÃO sobe para o GitHub (só as pastas de migration sobem).
+//
+// Guia: docs/11-checkout3-banco-backend.md
+// =============================================================================
+
+// “generator” = o Prisma gera código JavaScript para a gente usar nas APIs
+// (ex.: prisma.denuncia.create(...)). Sem isso, as rotas /api não conversam
+// com o banco de um jeito fácil.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// “datasource” = onde os dados moram.
+// provider "sqlite" = um arquivo local (simples para o MVP da disciplina).
+// url = lê do .env (nunca commitar a senha; o .env já está no .gitignore).
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// MODEL Denuncia = uma “tabela” no banco
+// =============================================================================
+// Em português: cada denúncia que a pessoa envia vira UMA linha nesta tabela.
+//
+// Por que esses nomes de campo?
+//   O front do check-out 2 já usa id, endereco, descricao, status, lat, lng
+//   em lib/denuncias-exemplo.js. Mantemos os MESMOS nomes para as telas
+//   (mapa, acompanhar, prefeitura) quase não precisarem mudar depois.
+//
+// No código das APIs o Prisma usa o model em camelCase:
+//   prisma.denuncia.create / findMany / findUnique / update
+// =============================================================================
+model Denuncia {
+  // Protocolo que a pessoa usa para acompanhar (ex.: "748393").
+  // É String (texto), NÃO número, para não perder zeros à esquerda.
+  // @id = chave primária: identifica a denúncia de forma única.
+  id String @id
+
+  // O que aparece em negrito no cartão / lista (rua, bairro…).
+  endereco String
+
+  // Texto do problema (mato alto, entulho, buraco…).
+  descricao String
+
+  // Só dois valores no MVP (escreva EXATAMENTE assim, em maiúsculas):
+  //   "PENDENTE"  → ainda não resolvida
+  //   "RESOLVIDO" → prefeitura marcou como resolvida
+  // Começa como PENDENTE quando a API cria o registro (passo 06 — já feito).
+  status String
+
+  // Latitude e longitude (GPS). O mapa Leaflet precisa desses números;
+  // endereço sozinho não basta para colocar o pin.
+  lat Float
+  lng Float
+
+  // Caminho da foto salva em public/uploads (ex.: "/uploads/abc.jpg").
+  // Opcional (?) = pode ficar vazio se um dia não houver foto.
+  // No MVP a API deve exigir foto ao criar; o ? deixa o schema flexível.
+  foto String?
+
+  // Datas que o Prisma preenche sozinho:
+  //   createdAt → quando a denúncia foi criada
+  //   updatedAt → última alteração (ex.: marcar resolvido)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -5,6 +5,8 @@ Este texto é o **mapa de trabalho** do check-out 2. Foi escrito para quem está
 **Branch Git:** `checkout2`  
 **Escopo:** só **telas** (HTML/CSS/React). **Não** inclui banco, API nem upload real de foto (isso é check-out 3).
 
+> **Atualização (check-out 3 · passo 09):** a tela `/denuncia` **já** envia para `POST /api/denuncias`. Este guia do check-out 2 continua útil para o visual e as outras telas; o envio real está documentado em [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
+
 Plano geral dos check-outs: [09-planejamento-checkouts.md](./09-planejamento-checkouts.md).  
 Cores e menu: [08-identidade-e-menu.md](./08-identidade-e-menu.md).  
 Imagens de referência: pasta [`ideias_layouts/`](./ideias_layouts/).
@@ -42,7 +44,7 @@ Detalhes do que fica fora: [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
 | `/denuncia` | `app/denuncia/page.js` + `BotaoEnviarDenuncia` | Layout visual **já feito** | **Não mexer no layout.** Enviar sorteia `id` do mock → sucesso |
 | `/denuncia/sucesso` | `app/denuncia/sucesso/page.js` | **Feito (fase 2)** | Mostra protocolo, copiar, links para Acompanhar / Home |
 | `/acompanhar` | `app/acompanhar/page.js` + `TelaAcompanhar` | **Feito (fase 3)** | Consulta por protocolo (mock); pré-preenche `?protocolo=` |
-| `/mapa` | `app/mapa/page.js` + `components/mapa/` | **Feito (fase 6)** | Polimento visual (cartões/selos iguais às outras telas); dados reais no check-out 3 |
+| `/mapa` | `app/mapa/page.js` + `components/mapa/` | **Feito (fase 6)** | Visual no check-out 2; **dados do banco** no check-out 3 (passo 11) |
 | `/prefeitura` | `app/prefeitura/page.js` + `TelaPrefeitura` | **Feito (fase 4)** | Senha `prefeitura` + lista + “marcar resolvido” (só na tela) |
 
 Menu (todas as telas): `components/MenuLateral.js`  

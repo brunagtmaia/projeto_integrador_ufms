@@ -16,12 +16,17 @@ Este guia é o “modo de usar” o repositório no dia a dia.
 | Mudar texto/botões da Home | `app/page.js` |
 | Incluir a mesma tela no menu | `components/MenuLateral.js` (array `itens`) |
 | Cores / estilo dos botões | `app/globals.css` (ver [08-identidade-e-menu.md](./08-identidade-e-menu.md)) |
-| Implementar o formulário de denúncia | `app/denuncia/page.js` (e depois API + Prisma) |
-| Consulta por protocolo | `app/acompanhar/page.js` |
-| Mapa | `app/mapa/page.js` e `components/mapa/` (já tem Leaflet; o banco entra depois) |
-| Marcar resolvido | `app/prefeitura/page.js` + senha no `.env` |
+| Implementar / ajustar o formulário de denúncia | `app/denuncia/page.js` + `components/denuncia/FormularioDenuncia.js` (passo 09 **já feito**) |
+| Banco / migração Prisma | `prisma/schema.prisma` + `npm run db:migrate` (guia: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md)) |
+| Rotas de API | `app/api/denuncias/route.js` — `POST` (criar) e `GET` (listar / `?protocolo=`). Guia: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) |
+| Consulta por protocolo | `components/acompanhar/TelaAcompanhar.js` — **já** chama `GET /api/denuncias?protocolo=` (passo 10) |
+| Mapa | `components/mapa/TelaMapa.js` — **já** chama `GET /api/denuncias` (passo 11) |
+| Marcar resolvido (API) | `app/api/denuncias/[id]/resolver/route.js` + `ADMIN_PASSWORD` no `.env` (passo 08 **já feito**) |
+| Tela Prefeitura | `components/prefeitura/TelaPrefeitura.js` — **já** usa senha do `.env` + `GET` + `PATCH` (passo 12) |
+| Marcar resolvido (tela) | Mesmo arquivo acima — grava `RESOLVIDO` no banco |
+| Testar o fluxo inteiro (ponta a ponta) | Guia: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) · **passo 13** (navegador + `curl`) |
 | Componente usado em várias telas | pasta `components/` |
-| Função auxiliar (gerar protocolo) | pasta `lib/` (criar o arquivo quando precisar) |
+| Cliente Prisma / gerar protocolo | `lib/prisma.js` e `lib/gerar-protocolo.js` (passo 05; as APIs usam a partir do 06) |
 | Explicar algo para o grupo | pasta `docs/` |
 
 ## Comentários no código

@@ -13,11 +13,12 @@ Este arquivo organiza o que ainda falta entregar na disciplina, com base no que 
 | P01 (módulos anteriores) | Concluído | Requisitos, escopo, fundamentação e base do projeto |
 | P02 · Módulo 1 | Concluído | Resolução de problemas e análise de requisitos ([P02_M1](./checkouts-ufms/P02/P02_M1.md)) |
 | Código base / check-out 2 | Telas prontas (mock) | Next.js, Home, denúncia, sucesso, acompanhar, mapa, prefeitura |
-| `/denuncia` | Layout visual pronto | **Não redesenhar**; Enviar → sucesso com protocolo mock |
+| `/denuncia` | **Passo 09 feito** | Formulário envia para `POST /api/denuncias` → sucesso com protocolo real |
 | `/denuncia/sucesso` | Feito (check-out 2) | Protocolo na URL, copiar, links |
-| `/acompanhar` | Feito (check-out 2) | Consulta por protocolo (mock) |
-| `/prefeitura` | Feito (check-out 2) | Senha `prefeitura` + marcar resolvido (só na tela) |
-| Banco (Prisma + SQLite) e APIs | Pendente | Pasta `app/api/` reservada; `schema.prisma` ainda falta |
+| `/acompanhar` | Feito (check-out 2) + **API no passo 10** | Consulta por protocolo no banco (`GET ?protocolo=`) |
+| `/mapa` | Feito (check-out 2) + **API no passo 11** | Lista e pins vêm de `GET /api/denuncias` |
+| `/prefeitura` | Feito (check-out 2) + **API no passo 12** | Senha do `.env` (`ADMIN_PASSWORD`) + lista e resolver no banco |
+| Banco (Prisma + SQLite) e APIs | **Feito** na branch `checkout3` | Passos 01–13 feitos ([guia](./11-checkout3-banco-backend.md)); falta merge na `main` |
 | Testes automatizados | Pendente | Ainda não definidos neste repositório |
 
 Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). Guia completo do check-out 2 (telas): [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md). O que fica fora do MVP: [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
@@ -29,7 +30,7 @@ Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). Guia completo 
 | Check-out | Módulo da disciplina | Foco do grupo | Branch Git |
 | --- | --- | --- | --- |
 | **2** | Desenvolvimento Web com Frameworks e HTML/CSS | **Todas as telas Frontend** | `checkout2` |
-| **3** | Banco de Dados e Controle de Versão | **Banco de dados + Backend** | `checkout-3-banco-backend` |
+| **3** | Banco de Dados e Controle de Versão | **Banco de dados + Backend** | `checkout3` |
 | **4** | Testes e Garantia de Qualidade | **Testes automatizados** | `checkout-4-testes` |
 
 **Versão final:** merge das três branches na `main` (ver [estratégia Git](#estratégia-git-uma-branch-por-check-out)).
@@ -81,17 +82,19 @@ Ao finalizar o check-out 2: abrir PR / merge em `main` (ou manter a branch até 
 
 **Objetivo:** persistir denúncias de verdade e ligar as telas às APIs.
 
+**Guia detalhado (para iniciantes):** [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
+
 ### Escopo
 
-1. **Modelo Prisma + SQLite** — criar `prisma/schema.prisma` (denúncia: protocolo, status, localização, foto, datas, etc.).
-2. **Migrações** — `npx prisma migrate dev` e arquivo local `dev.db` (não versionar o banco).
+1. **Prisma instalado + modelo** — pacotes no `package.json`; `prisma/schema.prisma` com o model Denuncia (protocolo, status, localização, foto, datas, etc.).
+2. **Migrações** — `npm run db:migrate` e arquivo local `dev.db` (não versionar o banco).
 3. **Rotas de API (Next.js)** — por exemplo:
    - criar denúncia (upload de foto → `public/uploads`);
    - buscar por protocolo;
    - listar para o mapa;
    - marcar como resolvido (validar senha do `.env`).
 4. **Integração com o Frontend** — trocar mocks/dados de exemplo pelas chamadas reais.
-5. **Controle de versão** — commits claros nesta branch; `.env` / `dev.db` fora do Git; documentar variáveis necessárias.
+5. **Controle de versão** — commits claros na branch `checkout3`; `.env` / `dev.db` fora do Git; documentar variáveis necessárias.
 
 ### Critérios de “pronto” deste check-out
 
@@ -104,10 +107,28 @@ Ao finalizar o check-out 2: abrir PR / merge em `main` (ou manter a branch até 
 ```text
 git checkout main
 git pull
-git checkout -b checkout-3-banco-backend
+git checkout checkout3
 ```
 
+(A branch `checkout3` já existe no remoto — use `git checkout checkout3` e `git pull`.)
+
 Preferência: partir da `main` **já com** o front do check-out 2 mergeado, para integrar UI + API sem retrabalho.
+
+### Progresso interno (passos)
+
+- [x] Passo 01 — branch + `.env`
+- [x] Passo 02 — instalar Prisma + schema base + docs
+- [x] Passo 03 — model `Denuncia` no `schema.prisma` + docs
+- [x] Passo 04 — migração `init_denuncia` + docs
+- [x] Passo 05 — `lib/prisma.js` + `lib/gerar-protocolo.js` + docs
+- [x] Passo 06 — `POST /api/denuncias` (criar + upload de foto) + docs
+- [x] Passo 07 — `GET /api/denuncias` (listar + buscar por protocolo) + docs
+- [x] Passo 08 — `PATCH /api/denuncias/[id]/resolver` (senha `.env`) + docs
+- [x] Passo 09 — ligar tela `/denuncia` ao `POST` (FormularioDenuncia) + docs
+- [x] Passo 10 — ligar tela `/acompanhar` ao `GET ?protocolo=` + docs
+- [x] Passo 11 — ligar tela `/mapa` ao `GET` lista + docs
+- [x] Passo 12 — ligar tela `/prefeitura` (senha `.env` + `GET` + `PATCH`) + docs
+- [x] Passo 13 — teste ponta a ponta (roteiro no navegador + `curl`) + docs
 
 ---
 
@@ -146,7 +167,7 @@ Preferência: partir da `main` **já com** front + backend mergeados.
 
 Regra combinada pelo grupo:
 
-1. **Uma branch dedicada para cada check-out** (`checkout2`, `checkout-3-banco-backend`, `checkout-4-testes`).
+1. **Uma branch dedicada para cada check-out** (`checkout2`, `checkout3`, `checkout-4-testes`).
 2. Trabalho do check-out **só** na branch correspondente (evita misturar front, banco e testes no mesmo commit confuso).
 3. Ao concluir cada etapa, **merge na `main`** (via PR no GitHub, se o grupo usar).
 4. **Versão final da disciplina:** `main` contendo o merge de tudo (front + banco/backend + testes) — essa é a baseline estável para entrega/demo.
@@ -158,7 +179,7 @@ main
   │
   ├── checkout2  ──(merge)──► main
   │                              │
-  ├── checkout-3-banco-backend ──(merge)──► main
+  ├── checkout3 ──(merge)────────► main
   │                              │
   └── checkout-4-testes ──(merge)─────────► main  = versão final
 ```
@@ -186,15 +207,24 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 - [x] Home aproximada do mockup FiscalizApp (sem perfil, sem ilustração, 4 ações)
 - [x] `/mapa` alinhada ao restante do visual (polimento fase 6)
 - [x] Responsivo mobile (layout mobile-first + menu lateral)
-- [ ] Branch `checkout2` mergeada na `main`
+- [x] Branch `checkout2` mergeada na `main`
 
 ### Check-out 3
 
-- [ ] Schema Prisma + migração
-- [ ] APIs de denúncia / protocolo / mapa / resolver
-- [ ] Upload de foto
-- [ ] Front consumindo dados reais
-- [ ] Branch `checkout-3-banco-backend` mergeada na `main`
+- [x] Documentação do check-out 3 ([11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md))
+- [x] Prisma instalado (`prisma` + `@prisma/client`) + schema base
+- [x] Modelo `Denuncia` no `schema.prisma` (passo 03)
+- [x] Migração `init_denuncia` (`prisma/migrations/…`) — passo 04
+- [x] `lib/prisma.js` + `lib/gerar-protocolo.js` — passo 05
+- [x] `POST /api/denuncias` (criar + upload de foto) — passo 06
+- [x] `GET /api/denuncias` (listar + `?protocolo=`) — passo 07
+- [x] `PATCH /api/denuncias/[id]/resolver` (senha `.env`) — passo 08
+- [x] Tela `/denuncia` enviando para a API (passo 09)
+- [x] Tela `/acompanhar` consultando a API (passo 10)
+- [x] Tela `/mapa` listando denúncias do banco (passo 11)
+- [x] Front da prefeitura consumindo API real — passo 12
+- [x] Teste ponta a ponta — passo 13 ([roteiro](./11-checkout3-banco-backend.md#16-passo-13--teste-ponta-a-ponta--o-que-acabamos-de-fazer))
+- [ ] Branch `checkout3` mergeada na `main`
 
 ### Check-out 4
 
@@ -215,3 +245,4 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 | [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md) | Stack, `.env`, Prisma |
 | [checkouts-ufms/P02/P02_M1.md](./checkouts-ufms/P02/P02_M1.md) | Texto do módulo 1 já entregue |
 | [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md) | Guia das telas do check-out 2 (iniciantes) |
+| [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) | Guia do banco/backend do check-out 3 (iniciantes) |

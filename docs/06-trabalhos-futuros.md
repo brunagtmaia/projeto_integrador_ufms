@@ -2,7 +2,7 @@
 
 O [mpv.md](./mpv.md) lista o que **não** entra nesta entrega. Este arquivo explica o **porquê**, para ninguém gastar semana em uma tela que o grupo combinou deixar para depois.
 
-Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus o que **ainda falta no MVP** (Prisma + SQLite para gravar denúncia). O Leaflet do mapa **já está** no projeto: [07-bibliotecas.md](./07-bibliotecas.md).
+Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus o que o MVP **já entrega** no check-out 3 (Prisma, APIs e telas ligadas ao banco). O Leaflet do mapa **já está** no projeto: [07-bibliotecas.md](./07-bibliotecas.md). Guia do check-out 3: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
 
 ## Não implementar agora
 
@@ -12,24 +12,25 @@ Bibliotecas que **não** vamos adicionar agora (login, PostGIS, PWA) versus o qu
 | “Minhas denúncias” | Exige saber **quem** é a pessoa. Sem login, o identificador é o **protocolo**. |
 | Denúncia anônima **e** com conta ao mesmo tempo | Duas regras de negócio misturadas; o MVP escolheu só o protocolo. |
 | Vídeo | Só **foto**, para simplificar upload e tamanho. |
-| Busca por CEP/endereço como tela extra | Localização no MVP pode ser mais simples (mapa/clique/GPS). |
+| Busca por CEP como tela extra | O formulário já tem GPS + autocomplete de endereço (`/api/geocode`). CEP dedicado (ViaCEP etc.) continua fora do MVP. |
 | Papéis admin/cidadão no banco | A “prefeitura” usa **uma senha** no `.env`, não uma tabela de usuários. |
 | E-mail (avisos) | Precisa de serviço externo e configuração. Fora do mínimo. |
 | PostGIS | Banco geográfico avançado. O MVP usa SQLite + pontos no mapa. |
 | PWA (instalar na tela inicial) | Extra de “app”. O site responsivo no celular já atende. |
 
-## O que o MVP **ainda vai ter** (não é “futuro”, é a ordem)
+## O que o MVP **já tem** (ordem cumprida no check-out 3)
 
-Isso **entra**, só não está todo pronto no código hoje:
+Isso **entra** no produto mínimo e **já está** no código da branch `checkout3`:
 
 1. Home + navegação ← **feito**
-2. Formulário de denúncia → gravar no SQLite → mostrar protocolo
-3. Consulta por protocolo
-4. Mapa com os registros ← **feito no front** (dados de exemplo; banco depois)
-5. Marcar como resolvido (senha `.env`)
-6. Ajustar CSS no celular (a `/mapa` já é responsiva)
+2. Formulário de denúncia → gravar no SQLite → mostrar protocolo ← **feito** (passos 02–06 + **09**)
+3. Consulta por protocolo ← **feita** (passo 10: tela chama `GET ?protocolo=`)
+4. Mapa com os registros ← **feito** (passo 11: lista do banco)
+5. Marcar como resolvido (senha `.env`) ← **feito** (API passo 08 + tela passo 12)
+6. Ajustar CSS no celular (a `/mapa` já é responsiva) ← **feito** no check-out 2
+7. Teste ponta a ponta (roteiro) ← **feito** (passo 13)
 
-Se você for implementar o item 2, 3, 5 ou o banco da lista do mapa, está no escopo. Se for criar `/login`, pare e releia o MVP.
+Se você for criar `/login`, pare e releia o MVP. O próximo módulo da disciplina (check-out 4) é **testes automatizados**, não novas telas de conta.
 
 ## Quando o trabalho da disciplina acabar
 

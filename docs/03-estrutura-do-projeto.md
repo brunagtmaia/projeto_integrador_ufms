@@ -13,21 +13,26 @@ projeto_integrador_ufms/
 │   ├── layout.js             ← moldura de todas as páginas
 │   ├── globals.css           ← CSS global + Tailwind
 │   ├── favicon.ico           ← ícone da aba do navegador
-│   ├── denuncia/page.js      ← tela /denuncia
+│   ├── denuncia/page.js      ← tela /denuncia (formulário → API, passo 09)
 │   ├── acompanhar/page.js    ← tela /acompanhar
 │   ├── mapa/page.js          ← tela /mapa
-│   ├── prefeitura/page.js    ← tela /prefeitura
-│   └── api/                  ← futuro: rotas de dados (pastas ainda vazias)
+│   ├── prefeitura/page.js    ← tela /prefeitura (senha .env + API, passo 12)
+│   └── api/                  ← APIs: denuncias (POST/GET) + [id]/resolver (PATCH)
 ├── components/               ← pedaços de tela reutilizáveis
 │   ├── PlaceholderTela.js
 │   ├── Icone.js
 │   ├── MenuLateral.js
-│   └── mapa/                 ← tela /mapa (Leaflet)
+│   ├── denuncia/             ← FormularioDenuncia + TelaSucessoDenuncia
+│   ├── acompanhar/           ← TelaAcompanhar
+│   ├── mapa/                 ← tela /mapa (Leaflet)
+│   └── prefeitura/           ← TelaPrefeitura (passo 12)
 ├── docs/                     ← esta documentação
 ├── public/                   ← arquivos estáticos (imagens, uploads)
 ├── lib/                      ← funções e dados auxiliares
-│   └── denuncias-exemplo.js  ← lista falsa para o mapa (sem banco)
-├── prisma/                   ← futuro: banco SQLite (hoje incompleto)
+│   ├── denuncias-exemplo.js  ← mock aposentado; mapa só usa CENTRO_MAPA
+│   ├── prisma.js             ← conexão única com o banco (check-out 3 · passo 05)
+│   └── gerar-protocolo.js    ← cria protocolo de 6 dígitos único
+├── prisma/                   ← banco SQLite + schema do Prisma (check-out 3)
 ├── package.json              ← nome do projeto, scripts, bibliotecas
 ├── README.md                 ← resumo rápido na raiz do GitHub
 ├── .env.example              ← modelo de variáveis de ambiente
@@ -51,7 +56,7 @@ Lista:
 *   os **comandos** (`npm run dev`, `npm run build`, `npm run lint`);
 *   as **dependências** (Next.js, React, Tailwind).
 
-O que cada biblioteca faz (Next, React, Tailwind, ESLint, o que ainda falta no MVP): [07-bibliotecas.md](./07-bibliotecas.md).
+O que cada biblioteca faz (Next, React, Tailwind, ESLint, Prisma): [07-bibliotecas.md](./07-bibliotecas.md).
 
 Se alguém adicionar uma biblioteca, este arquivo muda e **todo mundo** precisa rodar `npm install` de novo. Atualizem também o [07-bibliotecas.md](./07-bibliotecas.md).
 
@@ -108,18 +113,26 @@ No **App Router**, o nome da **pasta** vira o caminho da URL, **desde que** exis
 | `app/layout.js` | (todas) | HTML, idioma `pt-BR`, Poppins, ícones Material, `{children}` e o **menu lateral** |
 | `app/globals.css` | (todas) | Tailwind + paleta (verde/navy) + classes `btn-primario`, `cartao` |
 | `app/favicon.ico` | — | Ícone da aba |
-| `app/denuncia/page.js` | `/denuncia` | Placeholder da denúncia sem login |
-| `app/acompanhar/page.js` | `/acompanhar` | Placeholder da consulta por protocolo |
-| `app/mapa/page.js` | `/mapa` | Mapa OpenStreetMap + lista de casos (dados de exemplo) |
-| `app/prefeitura/page.js` | `/prefeitura` | Placeholder de marcar como resolvido |
+| `app/denuncia/page.js` | `/denuncia` | **Passo 09:** importa `FormularioDenuncia` (envia para a API) |
+| `app/acompanhar/page.js` | `/acompanhar` | Consulta por protocolo no **banco** (passo 10) |
+| `app/mapa/page.js` | `/mapa` | Mapa OpenStreetMap + lista do **banco** (passo 11) |
+| `app/prefeitura/page.js` | `/prefeitura` | **Passo 12:** marcar como resolvido (senha `.env` + banco) |
 
 **Como criar uma tela nova:** crie `app/nome-da-tela/page.js`, acrescente um item no array `telas` em `app/page.js` **e** um item no array `itens` em `components/MenuLateral.js`.
 
 ### `app/api/`
 
-Reservada para o **backend** no mesmo projeto. Pastas `denuncias/` e `geocode/` existem, mas **ainda não têm** `route.js`. Quando o grupo for gravar denúncia no banco, o arquivo típico será `app/api/denuncias/route.js` (isso vira a URL `/api/denuncias`).
+Aqui ficam as **rotas de dados** (backend no mesmo projeto Next.js). Não é tela com botão: o navegador (ou o `curl`) chama esses endereços.
 
-Não coloque tela de usuário aqui: API não é página com botão.
+| Caminho no disco | URL | Situação |
+| --- | --- | --- |
+| `app/api/denuncias/route.js` | `/api/denuncias` | **Passos 06–07:** `POST` cria denúncia + foto; `GET` lista todas ou busca com `?protocolo=`. |
+| `app/api/denuncias/[id]/resolver/route.js` | `/api/denuncias/125172/resolver` (o número muda) | **Passo 08:** `PATCH` marca `RESOLVIDO` se a senha = `ADMIN_PASSWORD` do `.env`. |
+| `app/api/geocode/route.js` | `/api/geocode?q=` ou `?lat=&lng=` | Proxy Nominatim: autocomplete de endereço e reverse do GPS (formulário `/denuncia`). |
+
+Como o Next “descobre” a URL: pasta + arquivo chamado exatamente `route.js`. A pasta `[id]` é **dinâmica** (cada protocolo vira uma URL diferente).
+
+Guia com exemplos de `curl`, JSON, telas ligadas e o teste ponta a ponta: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) (passos **06** a **13**).
 
 ## Pasta `components/`
 
@@ -127,13 +140,15 @@ Pedaços de interface **reutilizáveis**. A maioria é importada por um `page.js
 
 | Arquivo | Para quê |
 | --- | --- |
-| `PlaceholderTela.js` | Título, descrição, “Voltar à Home” e aviso de tela incompleta. Usado em `/denuncia`, `/acompanhar` e `/prefeitura` (não mais em `/mapa`). |
+| `PlaceholderTela.js` | Título, descrição, “Voltar à Home” e aviso de tela incompleta. Hoje quase não é usado (as telas do MVP já têm UI própria). |
 | `Icone.js` | Desenha um ícone **Material Icons Outlined** (ex.: `<icone nome="home">`). Nomes em inglês: [fonts.google.com/icons](https://fonts.google.com/icons) (estilo Outlined). |
 | `MenuLateral.js` | Menu **lateral** (abre/fecha). |
-| `mapa/TelaMapa.js` | Lista, filtro, botão Centralizar e carrega o mapa (só no navegador). |
+| `denuncia/FormularioDenuncia.js` | **Passo 09:** formulário de `/denuncia` — inputs + **carrossel de fotos** (até 5) + `POST /api/denuncias`. |
+| `denuncia/TelaSucessoDenuncia.js` | Tela `/denuncia/sucesso` — mostra o protocolo da URL. |
+| `acompanhar/TelaAcompanhar.js` | **Passo 10:** consulta por protocolo — `GET /api/denuncias?protocolo=`. |
+| `mapa/TelaMapa.js` | **Passo 11:** lista + filtro + `GET /api/denuncias` (lista completa) + Leaflet. |
 | `mapa/MapaLeaflet.js` | Leaflet + OpenStreetMap + marcadores + enquadrar pontos. |
-
-Quando o formulário de denúncia estiver pronto, essa página **para de usar** o placeholder. O arquivo pode ficar para outras telas incompletas ou ser apagado se ninguém mais precisar.
+| `prefeitura/TelaPrefeitura.js` | **Passo 12:** senha do `.env` + lista pendentes + `PATCH .../resolver`. |
 
 ## Pasta `docs/`
 
@@ -143,11 +158,14 @@ Documentação do trabalho (este guia). Veja o índice em [README.md](./README.m
 | --- | --- |
 | `README.md` | Índice da documentação |
 | `01-o-projeto.md` … `08-identidade-e-menu.md` | Guias para iniciantes (o `07` é bibliotecas; o `08` é visual e menu) |
+| `09-planejamento-checkouts.md` | Plano dos check-outs 2–4 e branches |
+| `10-checkout2-frontend-telas.md` | Guia do check-out 2 (telas) |
+| `11-checkout3-banco-backend.md` | Guia do check-out 3 (banco + backend) |
 | `mpv.md` | Escopo do MVP |
 | `arquitetura_e_tecnologias.md` | Instalar e rodar na máquina |
 | `ideias_layouts/` | Imagens do guia de cores/botões |
 | `chats/` | Pasta vazia (anotações futuras) |
-| `checkouts-ufms/` | Pasta vazia (anotações futuras) |
+| `checkouts-ufms/` | Textos dos check-outs da disciplina (P01, P02) |
 
 ## Pasta `public/`
 
@@ -163,19 +181,36 @@ Tudo aqui é servido **como arquivo estático**. Exemplo: `public/next.svg` apar
 
 ## Pasta `lib/`
 
-Funções e dados que **não são tela**.
+Funções e dados que **não são tela**. Quem importa daqui são as páginas, componentes ou (no check-out 3) as **APIs**.
 
-| Arquivo | Para quê |
-| --- | --- |
-| `denuncias-exemplo.js` | Lista falsa de denúncias (endereço, status, lat/lng) para a tela `/mapa` até existir o Prisma. |
+| Arquivo | Para quê | Situação |
+| --- | --- | --- |
+| `denuncias-exemplo.js` | Mock antigo + `CENTRO_MAPA`. | `/mapa` usa só o centro (passo 11). Lista mock **aposentada** — `/denuncia`, `/acompanhar`, `/mapa` e `/prefeitura` **já não** usam (passos 09–12). |
+| `prisma.js` | Exporta `prisma` — **uma** conexão com o SQLite para as rotas `/api/...` usarem. | **Pronto (passo 05).** |
+| `gerar-protocolo.js` | Função `gerarProtocoloUnico()` — sorteia protocolo de 6 dígitos e confere se já existe no banco. | **Pronto (passo 05).** Usado por `POST /api/denuncias` (passo 06). |
+| `fotos-denuncia.js` | Helpers para 1 ou várias fotos no campo `foto` (caminho único ou JSON). A API devolve `foto` + `fotos`. | Usado pelo `POST`/`GET` e pelo resolver. |
+
+**Dica:** não importe `prisma.js` ou `gerar-protocolo.js` dentro de componentes que rodam **só no navegador**. Eles precisam do Node/servidor (e do arquivo `.env`). As telas vão continuar falando com `/api/...` via `fetch`.
 
 ## Pasta `prisma/`
 
-No MVP o banco é **SQLite + Prisma**. Hoje a pasta tem:
+No MVP o banco é **SQLite + Prisma**. Os pacotes já estão no `package.json` (check-out 3 · passo 02).
 
 | Item | Situação |
 | --- | --- |
-| `dev.db` | Arquivo de banco local (não vai para o Git). Pode existir na sua máquina sem o `schema.prisma` ainda. |
-| `migrations/` | Histórico de mudanças do banco. Pasta iniciada; o modelo completo entra quando o grupo configurar o Prisma de verdade. |
+| `schema.prisma` | **Pronto (passo 03).** Tem a base (SQLite + generator) **e** o `model Denuncia` (campos: protocolo/`id`, endereço, descrição, status, lat/lng, foto, datas). |
+| `migrations/` | **Pronto (passo 04).** Pasta `…_init_denuncia/` com o SQL que cria a tabela. **Isso vai para o Git** (histórico compartilhado). |
+| `dev.db` | Arquivo de banco **local** (não vai para o Git). Depois do `npm run db:migrate`, a tabela `Denuncia` existe aí. |
 
-Ainda **falta** o arquivo `prisma/schema.prisma` (o “desenho” das tabelas). Sem ele, o Prisma não está de fato no fluxo do dia a dia. Quem for fazer o passo 2 do MVP (gravar denúncia) deve seguir [arquitetura\_e\_tecnologias.md](./arquitetura_e_tecnologias.md) e o [mpv.md](./mpv.md).
+**O que é um `model`?** É o desenho de **uma tabela**. `model Denuncia` = “cada denúncia é uma linha com estes campos”.
+
+**O que é uma migração?** É o “passo a passo” (em SQL) que o Prisma grava em `migrations/` para transformar o desenho em tabela real. Cada pessoa aplica isso na própria máquina com `npm run db:migrate`.
+
+**Cliente no código:** `lib/prisma.js` (passo 05) é o que as APIs importam.  
+**Criar denúncia:** `POST /api/denuncias` (**passo 06**) + tela `/denuncia` (**passo 09**).  
+**Buscar / listar:** `GET /api/denuncias` e `GET /api/denuncias?protocolo=...` (**passo 07**).  
+**Marcar resolvido:** `PATCH /api/denuncias/[id]/resolver` com senha do `.env` (**passo 08**).  
+**Telas já ligadas:** `/denuncia` (09), `/acompanhar` (10), `/mapa` (11), `/prefeitura` (12). Falta o teste ponta a ponta (13).
+
+Guia do check-out 3 (iniciantes): [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) — inclusive as seções dos passos **06** a **13**.  
+Instalar e rodar: [arquitetura\_e\_tecnologias.md](./arquitetura_e_tecnologias.md).
