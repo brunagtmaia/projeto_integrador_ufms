@@ -17,6 +17,7 @@ Se você acabou de clonar o repositório, comece por aqui, **nesta ordem**:
 | 9 | [09-planejamento-checkouts.md](./09-planejamento-checkouts.md) | Plano dos check-outs 2–4 (front, banco/backend, testes) e branches |
 | 10 | [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md) | **Check-out 2:** telas do front, decisões do grupo e checklist |
 | 11 | [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) | **Check-out 3:** Prisma, APIs, telas ligadas ao banco, **GPS + autocomplete de endereço**, **várias fotos (carrossel)** e teste ponta a ponta (passos 01–13) |
+| 12 | [12-checkout4-testes.md](./12-checkout4-testes.md) | **Check-out 4:** Vitest + Testing Library + Playwright E2E; passos **01–06** feitos |
 
 ## Textos que já existiam
 
@@ -31,7 +32,7 @@ O nome `mpv.md` é um typo antigo de **MVP** (Minimum Viable Product = produto m
 
 - `chats/` — pasta reservada.
 - `checkouts-ufms/` — textos dos check-outs da disciplina (P01, P02). O plano de execução dos módulos restantes está em [09-planejamento-checkouts.md](./09-planejamento-checkouts.md).
-- `ideias_layouts/` — imagens do guia visual (cores, botões). Explicação no código: [08-identidade-e-menu.md](./08-identidade-e-menu.md). Guia das telas: [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md). Guia do banco/backend: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
+- `ideias_layouts/` — imagens do guia visual (cores, botões). Explicação no código: [08-identidade-e-menu.md](./08-identidade-e-menu.md). Guia das telas: [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md). Guia do banco/backend: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md). Guia dos testes: [12-checkout4-testes.md](./12-checkout4-testes.md).
 
 ## Dica
 

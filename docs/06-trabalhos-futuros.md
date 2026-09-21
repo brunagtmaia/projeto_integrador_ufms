@@ -30,7 +30,7 @@ Isso **entra** no produto mínimo e **já está** no código da branch `checkout
 6. Ajustar CSS no celular (a `/mapa` já é responsiva) ← **feito** no check-out 2
 7. Teste ponta a ponta (roteiro) ← **feito** (passo 13)
 
-Se você for criar `/login`, pare e releia o MVP. O próximo módulo da disciplina (check-out 4) é **testes automatizados**, não novas telas de conta.
+Se você for criar `/login`, pare e releia o MVP. O módulo atual da disciplina (check-out 4) é **testes automatizados** — passos **01–06** já cobrem Vitest, helpers, APIs, Testing Library e Playwright E2E; falta o passo 07 (docs finais + merge na `main`). Guia: [12-checkout4-testes.md](./12-checkout4-testes.md).
 
 ## Quando o trabalho da disciplina acabar
 

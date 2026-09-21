@@ -1524,7 +1524,7 @@ A linha do seu protocolo deve ter:
 
 | Não confundir com… | Isso é… |
 | --- | --- |
-| Testes automatizados (`npm test`, Jest, Playwright…) | **Check-out 4** |
+| Testes automatizados (`npm test`, Vitest, Playwright…) | **Check-out 4** — guia: [12-checkout4-testes.md](./12-checkout4-testes.md) |
 | Merge da branch `checkout3` na `main` | Decisão do grupo / PR no GitHub |
 | Deploy na Vercel com fotos permanentes | Limitação do MVP (disco temporário na nuvem) — demo local com `npm run dev` |
 
@@ -1555,7 +1555,7 @@ Com os passos **01–13** feitos:
 
 Roteiro detalhado: seção do **passo 13** acima.
 
-O que ainda pode faltar **fora** deste guia: merge da branch `checkout3` na `main` (combinar no grupo) e o check-out 4 (testes automatizados).
+O que ainda pode faltar **fora** deste guia: merge da branch `checkout3` na `main` (combinar no grupo) e o check-out 4 (testes automatizados — [12-checkout4-testes.md](./12-checkout4-testes.md); passos **01–06** já cobrem `npm test` + helpers + APIs + Testing Library + Playwright E2E; falta o passo 07 = commit/merge na `main`).
 
 ---
 

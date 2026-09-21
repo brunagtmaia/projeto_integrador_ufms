@@ -150,9 +150,11 @@ Para **voltar a trabalhar** no dia seguinte: `cd` na pasta do projeto e de novo 
 ```plaintext
 projeto_integrador_ufms/
 ├── app/                 # páginas do site + APIs (ex.: app/api/denuncias/route.js)
+├── tests/               # testes automatizados (Vitest + Testing Library — check-out 4)
 ├── public/              # arquivos estáticos; fotos em public/uploads/
 ├── docs/                # textos do trabalho (este arquivo, MVP, etc.)
 ├── package.json         # dependências e comandos npm
+├── vitest.config.mjs    # configuração do Vitest
 ├── .env.example         # modelo das variáveis (pode ir para o Git)
 ├── .env                 # suas senhas (só na sua máquina)
 └── node_modules/        # bibliotecas baixadas (não edite à mão)
@@ -165,6 +167,20 @@ Também fazem parte do MVP:
 *   `lib/` — funções auxiliares: `CENTRO_MAPA` em `denuncias-exemplo.js` (lista mock aposentada), cliente Prisma (`prisma.js`) e gerar protocolo (`gerar-protocolo.js`).
 
 **Arquitetura em uma frase:** o Next.js serve as telas **e** as rotas `/api/...` no mesmo programa. O navegador fala com essas rotas; elas usam `lib/prisma.js` para gravar no SQLite e salvam fotos em `public/uploads`.
+
+### Testes (check-out 4)
+
+```plaintext
+npm test
+```
+
+Roda o Vitest. Passos 01–05: smoke, helpers, APIs (`GET`/`POST`/`PATCH`) e telas (`TelaAcompanhar`, `TelaPrefeitura`).
+
+```bash
+npm run test:e2e
+```
+
+Roda o Playwright (passo 06): fluxo no navegador denunciar → acompanhar → prefeitura. Na primeira vez: `npx playwright install chromium`. Guia: [12-checkout4-testes.md](./12-checkout4-testes.md).
 
 ## Banco de dados (Prisma + SQLite)
 

@@ -42,6 +42,14 @@ Servem **enquanto programamos**. Não são “a tela da denúncia”; ajudam a e
 | **eslint** | Programa que **lê o código** e avisa coisa estranha (variável não usada, erro de sintaxe). Roda com `npm run lint`. |
 | **eslint-config-next** | Conjunto de regras do ESLint **feitas para Next.js**. Assim o lint entende `page.js`, `layout.js`, etc. |
 | **prisma** | **CLI do Prisma** (linha de comando). Cria/atualiza o banco a partir do arquivo `prisma/schema.prisma`. Comandos do grupo: `npm run db:migrate`, `npm run db:studio`, `npm run db:generate`. |
+| **vitest** | **Vitest.** Roda os **testes automatizados** rápidos do check-out 4. Comandos: `npm test` (uma vez) e `npm run test:watch` (fica observando). Guia: [12-checkout4-testes.md](./12-checkout4-testes.md). |
+| **@testing-library/react** | **Testing Library.** Monta componentes React nos testes e procura botões/textos (passo 05). |
+| **@testing-library/jest-dom** | Frases extras nos testes: `toBeInTheDocument()`, `toHaveValue()`, etc. |
+| **@testing-library/user-event** | Simula digitação e clique “como uma pessoa” nos testes de tela. |
+| **jsdom** | Navegador falso dentro do Node (precisa para testar telas sem abrir o Chrome). |
+| **@vitejs/plugin-react** | Ajuda o Vitest a entender JSX nos arquivos `.test.jsx`. |
+| **@babel/core** + **@babel/preset-react** | Nos testes, convertem o JSX das telas em `components/*.js` (o app continua com `.js` normal). |
+| **@playwright/test** | **Playwright.** Abre o Chromium e testa o fluxo ponta a ponta (passo 06). Comandos: `npm run test:e2e` e, na 1ª vez, `npx playwright install chromium`. |
 
 **PostCSS** aparece no arquivo `postcss.config.mjs`. Não está listado à parte no `package.json` porque entra junto com o plugin do Tailwind. Função: transformar o CSS (incluindo `@import "tailwindcss"`) no CSS que o navegador entende.
 
@@ -126,9 +134,17 @@ Banco (check-out 3) → Prisma + SQLite gravam e leem denúncias
                      schema.prisma = desenho; lib/prisma.js = conexão
                      lib/gerar-protocolo.js = protocolo único
                      APIs em app/api/ = porta de entrada (POST/GET denúncias; PATCH resolver; geocode)
+Testes (check-out 4) → Vitest roda `npm test` (pasta tests/)
+                     passo 01 = smoke · passo 02 = helpers em lib/
+                     passo 03 = GET/POST /api/denuncias (tests/api/)
+                     passo 04 = PATCH .../resolver (senha da prefeitura)
+                     passo 05 = telas com Testing Library (tests/components/)
+                     Playwright → `npm run test:e2e` (pasta e2e/)
+                     passo 06 = fluxo denunciar → acompanhar → prefeitura
 ```
 
 Mais detalhes de pastas: [03-estrutura-do-projeto.md](./03-estrutura-do-projeto.md).  
 Visual e menu: [08-identidade-e-menu.md](./08-identidade-e-menu.md).  
 Como ligar o projeto: [arquitetura_e_tecnologias.md](./arquitetura_e_tecnologias.md).  
-Check-out 3 (banco + backend): [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).
+Check-out 3 (banco + backend): [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).  
+Check-out 4 (testes): [12-checkout4-testes.md](./12-checkout4-testes.md).

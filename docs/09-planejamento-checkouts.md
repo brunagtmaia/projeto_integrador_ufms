@@ -19,7 +19,7 @@ Este arquivo organiza o que ainda falta entregar na disciplina, com base no que 
 | `/mapa` | Feito (check-out 2) + **API no passo 11** | Lista e pins vêm de `GET /api/denuncias` |
 | `/prefeitura` | Feito (check-out 2) + **API no passo 12** | Senha do `.env` (`ADMIN_PASSWORD`) + lista e resolver no banco |
 | Banco (Prisma + SQLite) e APIs | **Feito** na branch `checkout3` | Passos 01–13 feitos ([guia](./11-checkout3-banco-backend.md)); falta merge na `main` |
-| Testes automatizados | Pendente | Ainda não definidos neste repositório |
+| Testes automatizados | **Código feito** (passos 01–06); falta passo 07 | Vitest + Testing Library + Playwright E2E verdes (`npm run test:all`); guia [12-checkout4-testes.md](./12-checkout4-testes.md) — falta commit + merge na `main` |
 
 Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). Guia completo do check-out 2 (telas): [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md). O que fica fora do MVP: [06-trabalhos-futuros.md](./06-trabalhos-futuros.md).
 
@@ -31,7 +31,7 @@ Detalhes das rotas: [04-rotas-e-telas.md](./04-rotas-e-telas.md). Guia completo 
 | --- | --- | --- | --- |
 | **2** | Desenvolvimento Web com Frameworks e HTML/CSS | **Todas as telas Frontend** | `checkout2` |
 | **3** | Banco de Dados e Controle de Versão | **Banco de dados + Backend** | `checkout3` |
-| **4** | Testes e Garantia de Qualidade | **Testes automatizados** | `checkout-4-testes` |
+| **4** | Testes e Garantia de Qualidade | **Testes automatizados** | `checkout4` |
 
 **Versão final:** merge das três branches na `main` (ver [estratégia Git](#estratégia-git-uma-branch-por-check-out)).
 
@@ -136,30 +136,50 @@ Preferência: partir da `main` **já com** o front do check-out 2 mergeado, para
 
 **Objetivo:** garantir qualidade com testes automatizados cobrindo o que o MVP entrega.
 
-### Escopo (sugestão alinhada ao módulo)
+**Guia detalhado (para iniciantes):** [12-checkout4-testes.md](./12-checkout4-testes.md).
 
-1. **Testes de API / backend** — criar denúncia, consultar protocolo, listar mapa, rejeitar senha inválida na prefeitura.
-2. **Testes de componentes ou páginas** — formulários e estados principais das telas (quando fizer sentido com a ferramenta escolhida pelo grupo).
-3. **Scripts no `package.json`** — ex.: `npm test` (e, se houver, lint).
-4. **Documentação curta** — como rodar os testes localmente (pode ficar neste arquivo ou em nota no README).
+### Escopo
 
-Ferramenta concreta (Jest, Vitest, Playwright, etc.) fica a cargo do grupo no início desta branch; o importante é **automatizar** os fluxos críticos acima.
+1. **Vitest + `npm test`** — runner instalado e smoke test verde (**passo 01 · feito**).
+2. **Testes de helpers** — `fotos-denuncia` e `gerar-protocolo` (**passo 02 · feito**).
+3. **Testes de API `GET` / `POST`** — listar, buscar protocolo, criar denúncia (**passo 03 · feito**).
+4. **Testes de API `PATCH .../resolver`** — senha da prefeitura (**passo 04 · feito**).
+5. **Testes de telas (Testing Library)** — `/acompanhar` e `/prefeitura` (**passo 05 · feito**).
+6. **E2E (Playwright)** — fluxo denunciar → acompanhar → prefeitura (**passo 06 · feito**).
+7. **Documentação + merge** — README/guia atualizados; merge na `main` (passo 07).
+
+Ferramentas escolhidas: **Vitest** + **Testing Library** + **Playwright**.
 
 ### Critérios de “pronto” deste check-out
 
-- Suite de testes rodando com um comando único.
+- Suite Vitest rodando com `npm test`.
+- Fluxo E2E rodando com `npm run test:e2e` (ou `npm run test:all`).
 - Cobertura dos fluxos críticos do MVP (não precisa testar o que está em “trabalhos futuros”).
 - Testes verdes na branch antes do merge final.
 
 ### Branch
 
 ```text
-git checkout main
+git checkout checkout4
 git pull
-git checkout -b checkout-4-testes
+npm install
+npx playwright install chromium
+npm test
+npm run test:e2e
 ```
+(A branch `checkout4` já existe no remoto.)
 
 Preferência: partir da `main` **já com** front + backend mergeados.
+
+### Progresso interno (passos)
+
+- [x] Passo 01 — Vitest + `npm test` + smoke test + docs ([guia](./12-checkout4-testes.md))
+- [x] Passo 02 — testes dos helpers (`lib/fotos-denuncia`, `lib/gerar-protocolo`)
+- [x] Passo 03 — testes `GET` / `POST` `/api/denuncias`
+- [x] Passo 04 — testes `PATCH .../resolver`
+- [x] Passo 05 — Testing Library (`TelaAcompanhar`, `TelaPrefeitura`)
+- [x] Passo 06 — Playwright E2E (fluxo denunciar → acompanhar → prefeitura)
+- [ ] Passo 07 — docs finais + merge na `main`
 
 ---
 
@@ -167,7 +187,7 @@ Preferência: partir da `main` **já com** front + backend mergeados.
 
 Regra combinada pelo grupo:
 
-1. **Uma branch dedicada para cada check-out** (`checkout2`, `checkout3`, `checkout-4-testes`).
+1. **Uma branch dedicada para cada check-out** (`checkout2`, `checkout3`, `checkout4`).
 2. Trabalho do check-out **só** na branch correspondente (evita misturar front, banco e testes no mesmo commit confuso).
 3. Ao concluir cada etapa, **merge na `main`** (via PR no GitHub, se o grupo usar).
 4. **Versão final da disciplina:** `main` contendo o merge de tudo (front + banco/backend + testes) — essa é a baseline estável para entrega/demo.
@@ -181,7 +201,7 @@ main
   │                              │
   ├── checkout3 ──(merge)────────► main
   │                              │
-  └── checkout-4-testes ──(merge)─────────► main  = versão final
+  └── checkout4 ──(merge)─────────► main  = versão final
 ```
 
 ### Boas práticas rápidas
@@ -228,9 +248,14 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 
 ### Check-out 4
 
-- [ ] Testes automatizados dos fluxos críticos
-- [ ] `npm test` (ou equivalente) documentado
-- [ ] Branch `checkout-4-testes` mergeada na `main`
+- [x] Documentação do check-out 4 ([12-checkout4-testes.md](./12-checkout4-testes.md))
+- [x] Passo 01 — Vitest + `npm test` + smoke test
+- [x] Passo 02 — testes dos helpers (`fotos-denuncia`, `gerar-protocolo`)
+- [x] Passo 03 — testes `GET` / `POST` `/api/denuncias`
+- [x] Passo 04 — testes `PATCH .../resolver`
+- [x] Passo 05 — Testing Library (telas `/acompanhar` e `/prefeitura`)
+- [x] Passo 06 — Playwright E2E (`npm run test:e2e`)
+- [ ] Branch `checkout4` mergeada na `main`
 - [ ] `main` = versão final para entrega
 
 ---
@@ -246,3 +271,4 @@ Como contribuir no dia a dia: [05-como-contribuir.md](./05-como-contribuir.md).
 | [checkouts-ufms/P02/P02_M1.md](./checkouts-ufms/P02/P02_M1.md) | Texto do módulo 1 já entregue |
 | [10-checkout2-frontend-telas.md](./10-checkout2-frontend-telas.md) | Guia das telas do check-out 2 (iniciantes) |
 | [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md) | Guia do banco/backend do check-out 3 (iniciantes) |
+| [12-checkout4-testes.md](./12-checkout4-testes.md) | Guia dos testes automatizados do check-out 4 (iniciantes) |

@@ -8,7 +8,7 @@ Regra de ouro: se você não sabe o que um arquivo faz, **não apague**. Leia es
 
 ```plaintext
 projeto_integrador_ufms/
-├── app/                      ← páginas e (depois) APIs — o coração do site
+├── app/                      ← páginas e APIs — o coração do site
 │   ├── page.js               ← Home (/)
 │   ├── layout.js             ← moldura de todas as páginas
 │   ├── globals.css           ← CSS global + Tailwind
@@ -26,6 +26,14 @@ projeto_integrador_ufms/
 │   ├── acompanhar/           ← TelaAcompanhar
 │   ├── mapa/                 ← tela /mapa (Leaflet)
 │   └── prefeitura/           ← TelaPrefeitura (passo 12)
+├── tests/                    ← testes Vitest (check-out 4 · passos 01–05)
+│   ├── unit/                 ← smoke (01) + helpers (02)
+│   ├── api/                  ← GET/POST (03) + PATCH resolver (04)
+│   └── components/           ← Testing Library (05) — telas
+├── e2e/                      ← testes Playwright (check-out 4 · passo 06)
+│   ├── fluxo-denuncia.spec.js
+│   ├── helpers-e2e.js
+│   └── fixtures/             ← foto-teste.jpg
 ├── docs/                     ← esta documentação
 ├── public/                   ← arquivos estáticos (imagens, uploads)
 ├── lib/                      ← funções e dados auxiliares
@@ -34,6 +42,8 @@ projeto_integrador_ufms/
 │   └── gerar-protocolo.js    ← cria protocolo de 6 dígitos único
 ├── prisma/                   ← banco SQLite + schema do Prisma (check-out 3)
 ├── package.json              ← nome do projeto, scripts, bibliotecas
+├── vitest.config.mjs         ← como o Vitest acha e roda os testes
+├── playwright.config.mjs     ← como o Playwright sobe o site e roda o E2E
 ├── README.md                 ← resumo rápido na raiz do GitHub
 ├── .env.example              ← modelo de variáveis de ambiente
 └── .gitignore                ← o que o Git NÃO deve enviar ao GitHub
@@ -53,10 +63,10 @@ Arquivos gerados automaticamente (não editar, não commitar):
 Lista:
 
 *   o **nome** do projeto;
-*   os **comandos** (`npm run dev`, `npm run build`, `npm run lint`);
-*   as **dependências** (Next.js, React, Tailwind).
+*   os **comandos** (`npm run dev`, `npm run build`, `npm run lint`, `npm test`, `npm run test:e2e`);
+*   as **dependências** (Next.js, React, Tailwind, Prisma, Vitest, Playwright…).
 
-O que cada biblioteca faz (Next, React, Tailwind, ESLint, Prisma): [07-bibliotecas.md](./07-bibliotecas.md).
+O que cada biblioteca faz (Next, React, Tailwind, ESLint, Prisma, Vitest): [07-bibliotecas.md](./07-bibliotecas.md).
 
 Se alguém adicionar uma biblioteca, este arquivo muda e **todo mundo** precisa rodar `npm install` de novo. Atualizem também o [07-bibliotecas.md](./07-bibliotecas.md).
 
@@ -71,6 +81,40 @@ Primeira página que aparece no GitHub. Tem o comando para ligar o site. O manua
 ### `jsconfig.json`
 
 Ajuda o editor a entender imports. O atalho `@/` aponta para a raiz (`@/components/...` = pasta `components/` na raiz). Hoje os arquivos ainda usam caminho relativo (`../../components/...`), os dois jeitos funcionam.
+
+### `vitest.config.mjs`
+
+Configuração do **Vitest** (check-out 4). Diz onde estão os testes (`.test.js` e `.test.jsx`), ativa **jsdom** nas telas e repete o atalho `@/`. Também inclui um plugin Babel para o Vitest entender JSX em `components/*.js` sem renomear as telas do app. Guia: [12-checkout4-testes.md](./12-checkout4-testes.md).
+
+### `playwright.config.mjs`
+
+Configuração do **Playwright** (check-out 4 · passo 06). Diz a URL (`http://localhost:3000`), a pasta `e2e/` e sobe o `npm run dev` sozinho antes dos testes. Guia: [12-checkout4-testes.md](./12-checkout4-testes.md).
+
+### `tests/`
+
+Pasta dos **testes do Vitest** (check-out 4). Hoje:
+
+* `tests/unit/smoke.test.js` — passo 01 (Vitest ligado?)
+* `tests/unit/fotos-denuncia.test.js` — passo 02 (helpers de foto)
+* `tests/unit/gerar-protocolo.test.js` — passo 02 (protocolo, com mock do Prisma)
+* `tests/api/helpers-api.js` — atalhos só para os testes (foto falsa, denúncia de exemplo)
+* `tests/api/denuncias-get.test.js` — passo 03 (`GET` listar / buscar protocolo)
+* `tests/api/denuncias-post.test.js` — passo 03 (`POST` criar + validações)
+* `tests/api/denuncias-resolver.test.js` — passo 04 (`PATCH` marcar resolvido + senha)
+* `tests/setup-components.js` — passo 05 (matchers do Testing Library)
+* `tests/components/helpers-telas.js` — passo 05 (atalhos das telas)
+* `tests/components/TelaAcompanhar.test.jsx` — passo 05 (tela `/acompanhar`)
+* `tests/components/TelaPrefeitura.test.jsx` — passo 05 (tela `/prefeitura`)
+
+### `e2e/`
+
+Pasta dos **testes Playwright** (check-out 4 · passo 06):
+
+* `e2e/fluxo-denuncia.spec.js` — fluxo denunciar → acompanhar → prefeitura
+* `e2e/helpers-e2e.js` — ler `.env` + mock do geocode
+* `e2e/fixtures/foto-teste.jpg` — foto ≥ 2 KB para o upload
+
+Passos **01–06** feitos. Falta o passo 07 (docs finais + merge na `main`). Guia: [12-checkout4-testes.md](./12-checkout4-testes.md).
 
 ### `next.config.mjs`
 
@@ -126,8 +170,8 @@ Aqui ficam as **rotas de dados** (backend no mesmo projeto Next.js). Não é tel
 
 | Caminho no disco | URL | Situação |
 | --- | --- | --- |
-| `app/api/denuncias/route.js` | `/api/denuncias` | **Passos 06–07:** `POST` cria denúncia + foto; `GET` lista todas ou busca com `?protocolo=`. |
-| `app/api/denuncias/[id]/resolver/route.js` | `/api/denuncias/125172/resolver` (o número muda) | **Passo 08:** `PATCH` marca `RESOLVIDO` se a senha = `ADMIN_PASSWORD` do `.env`. |
+| `app/api/denuncias/route.js` | `/api/denuncias` | **Passos 06–07:** `POST` cria denúncia + foto; `GET` lista todas ou busca com `?protocolo=`. **Testes:** `tests/api/denuncias-*.test.js` (check-out 4 · passo 03). |
+| `app/api/denuncias/[id]/resolver/route.js` | `/api/denuncias/125172/resolver` (o número muda) | **Passo 08:** `PATCH` marca `RESOLVIDO` se a senha = `ADMIN_PASSWORD` do `.env`. **Testes:** `tests/api/denuncias-resolver.test.js` (check-out 4 · passo 04). |
 | `app/api/geocode/route.js` | `/api/geocode?q=` ou `?lat=&lng=` | Proxy Nominatim: autocomplete de endereço e reverse do GPS (formulário `/denuncia`). |
 
 Como o Next “descobre” a URL: pasta + arquivo chamado exatamente `route.js`. A pasta `[id]` é **dinâmica** (cada protocolo vira uma URL diferente).
@@ -187,8 +231,8 @@ Funções e dados que **não são tela**. Quem importa daqui são as páginas, c
 | --- | --- | --- |
 | `denuncias-exemplo.js` | Mock antigo + `CENTRO_MAPA`. | `/mapa` usa só o centro (passo 11). Lista mock **aposentada** — `/denuncia`, `/acompanhar`, `/mapa` e `/prefeitura` **já não** usam (passos 09–12). |
 | `prisma.js` | Exporta `prisma` — **uma** conexão com o SQLite para as rotas `/api/...` usarem. | **Pronto (passo 05).** |
-| `gerar-protocolo.js` | Função `gerarProtocoloUnico()` — sorteia protocolo de 6 dígitos e confere se já existe no banco. | **Pronto (passo 05).** Usado por `POST /api/denuncias` (passo 06). |
-| `fotos-denuncia.js` | Helpers para 1 ou várias fotos no campo `foto` (caminho único ou JSON). A API devolve `foto` + `fotos`. | Usado pelo `POST`/`GET` e pelo resolver. |
+| `gerar-protocolo.js` | Função `gerarProtocoloUnico()` — sorteia protocolo de 6 dígitos e confere se já existe no banco. | **Pronto (passo 05).** Usado por `POST /api/denuncias` (passo 06). **Testes:** `tests/unit/gerar-protocolo.test.js` (check-out 4 · passo 02). |
+| `fotos-denuncia.js` | Helpers para 1 ou várias fotos no campo `foto` (caminho único ou JSON). A API devolve `foto` + `fotos`. | Usado pelo `POST`/`GET` e pelo resolver. **Testes:** `tests/unit/fotos-denuncia.test.js` (check-out 4 · passo 02). |
 
 **Dica:** não importe `prisma.js` ou `gerar-protocolo.js` dentro de componentes que rodam **só no navegador**. Eles precisam do Node/servidor (e do arquivo `.env`). As telas vão continuar falando com `/api/...` via `fetch`.
 

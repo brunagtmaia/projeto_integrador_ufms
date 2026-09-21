@@ -52,7 +52,22 @@ Quando aparecer uma palavra estranha no código ou nas reuniões, volte nesta li
 | **Geocode / autocomplete** | Buscar sugestões de endereço enquanto a pessoa digita; ao escolher, o formulário guarda `lat`/`lng` sem mostrar os números. |
 | **Deploy / Vercel** | Colocar o site na internet. Combinamos Vercel no MVP. |
 | **`public/`** | Arquivos que o navegador baixa direto (ícones, fotos em `uploads/`). |
+| **Teste automatizado** | Código que confere sozinho se uma parte do app ainda funciona. No check-out 4 usamos **Vitest** + **Testing Library** + **Playwright**. Guia: [12-checkout4-testes.md](./12-checkout4-testes.md). |
+| **Vitest** | Ferramenta que **roda** os testes rápidos (`npm test`). Parecida com Jest. |
+| **Testing Library** | Ajuda a testar **telas React** (botões, textos, formulários) sem abrir o Chrome. |
+| **jsdom** | “Navegador falso” usado pelo Vitest nos testes de componentes. |
+| **Playwright** | Abre o **Chromium de verdade** e simula cliques/digitação. Comando: `npm run test:e2e`. |
+| **E2E** | “End-to-end” / ponta a ponta: do formulário até marcar resolvido (passo 06). |
+| **Smoke test** | Teste bem simples só para ver se a ferramenta de testes está ligada. Não prova o app inteiro. |
+| **Helper** | Função auxiliar em `lib/` (ex.: montar lista de fotos). Não é uma tela. |
+| **Teste unitário** | Testa **uma função** (ou um pedaço pequeno) de forma isolada. |
+| **Mock** | “Fingir” uma dependência nos testes (ex.: o banco Prisma ou o geocode), sem usar internet/`dev.db`. |
+| **`npm test`** | Roda a suite do Vitest **uma vez** e termina. |
+| **`npm run test:e2e`** | Roda os testes Playwright no navegador. |
+| **Teste de API** | Chama as funções `GET`/`POST`/`PATCH` das rotas em `app/api/` e confere o JSON e o status (200, 201, 400, 401, 404…). Não abre o navegador. Guia passos 03–04: [12-checkout4-testes.md](./12-checkout4-testes.md). |
+| **Teste de componente / tela** | Monta um componente React (ex.: `TelaAcompanhar`) e confere textos/botões. Usa Testing Library + mock do `fetch`. Guia passo 05: [12-checkout4-testes.md](./12-checkout4-testes.md). |
+| **FormData** | Jeito de enviar formulário com **texto + arquivo** (foto) na mesma requisição — usado no `POST /api/denuncias`. |
 
-Nomes e funções de **cada biblioteca** (Next, React, Tailwind, Prisma, Leaflet, etc.): [07-bibliotecas.md](./07-bibliotecas.md).
+Nomes e funções de **cada biblioteca** (Next, React, Tailwind, Prisma, Leaflet, Vitest, Testing Library, Playwright, etc.): [07-bibliotecas.md](./07-bibliotecas.md).
 
 Se faltar uma palavra, acrescentem neste arquivo e avisem o grupo.

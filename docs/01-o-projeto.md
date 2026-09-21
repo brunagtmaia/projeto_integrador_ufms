@@ -35,6 +35,7 @@ No **check-out 3** (branch `checkout3`) o grupo ligou o **banco** e as **APIs**:
 
 Guia do check-out 3: [11-checkout3-banco-backend.md](./11-checkout3-banco-backend.md).  
 Roteiro denunciar → acompanhar → mapa → resolver: seção do **passo 13** nesse guia.  
+Check-out 4 (testes): [12-checkout4-testes.md](./12-checkout4-testes.md) — passos **01–06** já feitos (`npm test` + helpers + APIs + telas + Playwright E2E). Falta o passo 07 (merge na `main`).
 Visual (cores, fonte, ícones e mapa): [08-identidade-e-menu.md](./08-identidade-e-menu.md).  
 Ordem do produto: [mpv.md](./mpv.md).
 
