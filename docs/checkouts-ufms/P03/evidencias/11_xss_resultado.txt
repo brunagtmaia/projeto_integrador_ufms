@@ -1,0 +1,2 @@
+desktop: texto da descricao visivel como texto? 1
+celular: texto da descricao visivel como texto? 1

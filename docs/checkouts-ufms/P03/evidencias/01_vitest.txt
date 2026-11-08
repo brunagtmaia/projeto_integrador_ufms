@@ -1,0 +1,20 @@
+
+ RUN  v4.1.12 /Users/brunagtmaia/ufms/projeto_integrador_ufms
+
+ ✓ tests/unit/smoke.test.js (2 tests) 3ms
+ ✓ tests/unit/fotos-denuncia.test.js (13 tests) 3ms
+ ✓ tests/unit/gerar-protocolo.test.js (3 tests) 3ms
+stderr | tests/api/denuncias-resolver.test.js > PATCH /api/denuncias/[id]/resolver > devolve 500 quando ADMIN_PASSWORD não está no ambiente
+[PATCH /api/denuncias/[id]/resolver] ADMIN_PASSWORD não está no .env
+
+ ✓ tests/api/denuncias-get.test.js (4 tests) 7ms
+ ✓ tests/api/denuncias-resolver.test.js (7 tests) 8ms
+ ✓ tests/api/denuncias-post.test.js (6 tests) 12ms
+ ✓ tests/components/TelaAcompanhar.test.jsx (6 tests) 172ms
+ ✓ tests/components/TelaPrefeitura.test.jsx (5 tests) 219ms
+
+ Test Files  8 passed (8)
+      Tests  46 passed (46)
+   Start at  18:32:59
+   Duration  936ms (transform 366ms, setup 404ms, import 505ms, tests 427ms, environment 560ms)
+

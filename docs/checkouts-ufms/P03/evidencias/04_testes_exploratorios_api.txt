@@ -1,0 +1,36 @@
+(Nota: as primeiras tentativas de T1/T2/T6/T7 usaram o nome de campo errado e foram refeitas abaixo com o campo correto 'foto'.)
+
+## T1 POST latitude=999 (fora do intervalo -90..90)
+{"ok":true,"id":"387413","protocolo":"387413","denuncia":{"id":"387413","endereco":"Rua Teste, 1","descricao":"teste exploratorio","status":"PENDENTE","lat":999,"lng":-47,"foto":"/uploads/1793741667963-b215a027-2a6.jpg","fotos":["/uploads/1793741667963-b215a027-2a6.jpg"],"createdAt":"2026-11-03T21:34:27.966Z","updatedAt":"2026-11-03T21:34:27.966Z"}}
+HTTP 201
+
+## T2 arquivo de texto com nome .jpg e MIME image/jpeg
+{"ok":false,"erro":"Uma das fotos é pequena demais ou inválida. Envie uma imagem real do problema."}
+HTTP 400
+
+## T6 POST sem foto
+{"ok":false,"erro":"Envie ao menos uma foto (campo \"foto\", arquivo de imagem)."}
+HTTP 400
+
+## T7 descricao com HTML/script
+
+HTTP 000
+
+## T5 10 tentativas de senha errada (resolver)
+401 401 401 401 401 401 401 401 401 401 
+
+## T9 sequência de protocolos (6 dígitos)
+"id":"387413"
+"id":"121813"
+
+## T2b arquivo de TEXTO de 8 KB (não é imagem) enviado como image/jpeg
+{"ok":true,"id":"477223","protocolo":"477223","denuncia":{"id":"477223","endereco":"Rua Teste, 5","descricao":"arquivo falso grande","status":"PENDENTE","lat":-22,"lng":-47.9,"foto":"/uploads/1793741678073-e83a3c6a-4d9.jpg","fotos":["/uploads/1793741678073-e83a3c6a-4d9.jpg"],"createdAt":"2026-11-03T21:34:38.075Z","updatedAt":"2026-11-03T21:34:38.075Z"}}
+HTTP 201
+
+## T7 descricao com HTML/script
+
+HTTP 000
+
+## T7 descricao com HTML/script (via --form-string)
+{"ok":true,"id":"919431","protocolo":"919431","denuncia":{"id":"919431","endereco":"Rua Teste, 4","descricao":"<script>alert(1)</script>","status":"PENDENTE","lat":-22,"lng":-47.9,"foto":"/uploads/1793741685388-acf80976-dcd.jpg","fotos":["/uploads/1793741685388-acf80976-dcd.jpg"],"createdAt":"2026-11-03T21:34:45.390Z","updatedAt":"2026-11-03T21:34:45.390Z"}}
+HTTP 201

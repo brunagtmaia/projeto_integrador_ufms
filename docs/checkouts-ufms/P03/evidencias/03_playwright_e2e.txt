@@ -1,0 +1,6 @@
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › e2e/fluxo-denuncia.spec.js:36:7 › Fluxo MVP: denunciar → acompanhar → prefeitura › cria denúncia, consulta protocolo e marca como resolvido (4.9s)
+
+  1 passed (8.7s)

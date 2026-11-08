@@ -1,0 +1,70 @@
+
+/Users/brunagtmaia/ufms/projeto_integrador_ufms/components/MenuLateral.js
+  62:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  60 |   // O array [caminho] é a lista de dependências: só roda de novo se a URL mudar.
+  61 |   useEffect(() => {
+> 62 |     setAberto(false);
+     |     ^^^^^^^^^ Avoid calling setState() directly within an effect
+  63 |   }, [caminho]);
+  64 |
+  65 |   // Outro efeito: tecla Esc fecha o menu  react-hooks/set-state-in-effect
+
+/Users/brunagtmaia/ufms/projeto_integrador_ufms/components/acompanhar/TelaAcompanhar.js
+  46:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  44 |   useEffect(() => {
+  45 |     if (protocoloNaUrl) {
+> 46 |       setProtocolo(protocoloNaUrl);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  47 |     }
+  48 |   }, [protocoloNaUrl]);
+  49 |  react-hooks/set-state-in-effect
+
+/Users/brunagtmaia/ufms/projeto_integrador_ufms/components/denuncia/FormularioDenuncia.js
+   76:3   error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+  74 |   );
+  75 |   const fotosRef = useRef(fotos);
+> 76 |   fotosRef.current = fotos;
+     |   ^^^^^^^^^^^^^^^^ Cannot update ref during render
+  77 |
+  78 |   const temCoordenadas = Boolean(lat.trim() && lng.trim());
+  79 |  react-hooks/refs
+  583:19  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                  @next/next/no-img-element
+
+/Users/brunagtmaia/ufms/projeto_integrador_ufms/components/mapa/TelaMapa.js
+  115:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  113 |   //  rodar na montagem; o botão “Tentar de novo” chama a função de novo.)
+  114 |   useEffect(() => {
+> 115 |     carregarDenuncias();
+      |     ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  116 |     // eslint-disable-next-line react-hooks/exhaustive-deps -- só na montagem
+  117 |   }, []);
+  118 |  react-hooks/set-state-in-effect
+  116:5  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+✖ 6 problems (4 errors, 2 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
